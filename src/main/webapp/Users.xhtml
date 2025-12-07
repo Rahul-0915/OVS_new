@@ -1,11 +1,185 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<head>
+    <title>Voter Portal Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+        }
+
+        .navbar {
+            background: #0D47A1;
+            padding: 12px 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .nav-right a {
+            margin-left: 25px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .main-container { padding: 20px; }
+
+        .section-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .left-area, .right-area {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #0D47A1;
+        }
+
+        .small-box {
+            background: #e8eaf6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background: #0D47A1;
+            padding: 8px 12px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .bottom-info {
+            background: #fff;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+        }
+
+        .footer {
+            background: #0D47A1;
+            padding: 20px;
+            color: white;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="nav-left">VOTER SERVICE PORTAL</div>
+        <div class="nav-right">
+            <a href="#">Vote</a>
+            <a href="logout.xhtml">Logout</a>
+        </div>
+    </div>
+
+    <div class="main-container">
+
+        <div class="section-box">
+
+            <!-- LEFT AREA -->
+            <div class="left-area">
+                <div class="section-title">Form Section</div>
+
+                <!-- Form 6 -->
+                <div class="small-box">
+                    <h4>Form 6 - New Voter Registration</h4>
+                    <a class="btn" href="https://eci.gov.in/uploads/files/6996_Form-6-English.pdf" target="_blank">Download</a>
+                    <a class="btn" href="https://voters.eci.gov.in/form6" target="_blank">View</a>
+                    <a class="btn" href="Form6_New.jsf" target="_blank">Fill Form 6</a>
+                </div>
+
+                <!-- Form 8 -->
+                <div class="small-box">
+                    <h4>Form 8 - Correction in Voter Details</h4>
+                    <a class="btn" href="https://eci.gov.in/uploads/files/6999_Form-8-English.pdf" target="_blank">Download</a>
+                    <a class="btn" href="https://voters.eci.gov.in/form8" target="_blank">View</a>
+                </div>
+
+                <!-- Form 7 -->
+                <div class="small-box">
+                    <h4>Form 7 - Objection on Inclusion</h4>
+                    <a class="btn" href="https://eci.gov.in/uploads/files/6998_Form-7-English.pdf" target="_blank">Download</a>
+                    <a class="btn" href="https://voters.eci.gov.in/form7" target="_blank">View</a>
+                </div>
+
+                <!-- Form 6B -->
+                <div class="small-box">
+                    <h4>Form 6B - Aadhaar Linking</h4>
+                    <a class="btn" href="https://eci.gov.in/uploads/files/14529_Form-6B-English.pdf" target="_blank">Download</a>
+                    <a class="btn" href="https://voters.eci.gov.in/form6b" target="_blank">View</a>
+                </div>
+            </div>
+
+            <!-- RIGHT AREA -->
+            <div class="right-area">
+                <div class="section-title">Service Section</div>
+
+                <div class="small-box">
+                    <h4>E-Card Download</h4>
+                    <a class="btn" href="DownloadCard.jsf" target="_blank">Download E-Card</a>
+                </div>
+
+                <div class="small-box">
+                    <h4>Track Application Status</h4>
+                    <a class="btn" href="https://voters.eci.gov.in/application-status" target="_blank">Check Status</a>
+                </div>
+
+                <div class="small-box">
+                    <h4>Find Your Polling Station</h4>
+                    <a class="btn" href="https://electoralsearch.eci.gov.in/" target="_blank">View Details</a>
+                </div>
+
+                <div class="small-box">
+                    <h4>Know Your BLO</h4>
+                    <a class="btn" href="https://electoralsearch.eci.gov.in/" target="_blank">View Information</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Info -->
+        <div class="bottom-info">
+            <h3>About Election</h3>
+            <p>
+                The Election Commission of India ensures free and fair elections across the nation.
+                Every citizen above 18 years has the right to vote. Proper registration, voter card
+                accuracy, and participation strengthen democracy.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Contact Us</h3>
+            <p><b>Contact Number:</b> 1950 (Toll-free)</p>
+            <p><b>Address:</b> Nirvachan Sadan, Ashoka Road, New Delhi 110001</p>
+            <p><b>Email:</b> complaints@eci.gov.in</p>
+        </div>
+
+    </div>
+
+</body>
 </html>

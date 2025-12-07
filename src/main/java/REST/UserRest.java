@@ -215,33 +215,33 @@ public class UserRest {
     }
 
 // update voters 
-    @PUT
-    @Path("/updatevoter/{voterId}/{voterName}/{mobileNumber}/{adharNumber}/{emailId}/{dob}/{city}/{pincode}/{address}/{adharFile}/{voterImage}")
-    public String updateVoter(
-            @PathParam("voterId") int voterId,
-            @PathParam("voterName") String voterName,
-            @PathParam("mobileNumber") int mobileNumber,
-            @PathParam("adharNumber") int adharNumber,
-            @PathParam("emailId") String emailId,
-            @PathParam("dob") String dobStr,
-            @PathParam("city") String city,
-            @PathParam("pincode") int pincode,
-            @PathParam("address") String address,
-            @PathParam("adharFile") String adharFile,
-            @PathParam("voterImage") String voterImage
-    ) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date dob = sdf.parse(dobStr);
-
-            ovs.updateVoter(voterId, voterName, mobileNumber, adharNumber, emailId, dob, city, pincode, address, adharFile, voterImage);
-
-            return " Voter updated successfully → ID: " + voterId;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error updating voter: " + e.getMessage();
-        }
-    }
+//    @PUT
+//    @Path("/updatevoter/{voterId}/{voterName}/{mobileNumber}/{adharNumber}/{emailId}/{dob}/{city}/{pincode}/{address}/{adharFile}/{voterImage}")
+//    public String updateVoter(
+//            @PathParam("voterId") int voterId,
+//            @PathParam("voterName") String voterName,
+//            @PathParam("mobileNumber") int mobileNumber,
+//            @PathParam("adharNumber") int adharNumber,
+//            @PathParam("emailId") String emailId,
+//            @PathParam("dob") String dobStr,
+//            @PathParam("city") String city,
+//            @PathParam("pincode") int pincode,
+//            @PathParam("address") String address,
+//            @PathParam("adharFile") String adharFile,
+//            @PathParam("voterImage") String voterImage
+//    ) {
+//        try {
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//            Date dob = sdf.parse(dobStr);
+//
+//            ovs.updateVoter(voterId, voterName, mobileNumber, adharNumber, emailId, dob, city, pincode, address, adharFile, voterImage);
+//
+//            return " Voter updated successfully → ID: " + voterId;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Error updating voter: " + e.getMessage();
+//        }
+//    }
 //votes......................................................
 
     @POST

@@ -19,15 +19,19 @@ import java.util.Date;
 public interface UserBeanLocal {
 
     //Voters ejb....................
-    public void addVoter(String voterName, int mobileNumber, int adharNumber, String emailId, Date dob, String city,
-            int pincode, String address, String adharFilePath, String voterImagePath);
+        public void addVoter(String voterName, int mobileNumber, int adharNumber, String emailId, Date dob, String city,
+                int pincode, String address, String adharFilePath, String voterImagePath);
 
-    public void updateVoter(int voterId, String voterName, int mobileNumber, int adharNumber, String emailId, Date dob,
-            String city, int pincode, String address, String adharFilePath, String voterImagePath);
+        public void updateVoter(int voterId, String voterName, int mobileNumber, int adharNumber, String emailId,
+                        Date dob, String city, int pincode, String address, String adharFilePath,
+                        String voterImagePath, int status, Date issueDate);
+
 
     void deleteVoter(int voterId);
 
     Voters findByVoterId(int voterId);
+    
+    Voters findByVoterName(String voterName);
 
     Collection<Voters> getAllVoters();
 

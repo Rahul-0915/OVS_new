@@ -1,24 +1,74 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
+
     <h:head>
-        <title>Facelet Title</title>
+        <title>Login</title>
+        <link href="CSS/Forms.css" rel="stylesheet" type="text/css"/>
+
+        <script>
+            function validateForm() {
+                let u = document.forms["loginForm"]["username"].value.trim();
+                let p = document.forms["loginForm"]["password"].value.trim();
+
+                document.getElementById("uErr").innerHTML = "";
+                document.getElementById("pErr").innerHTML = "";
+
+                let valid = true;
+
+                if (u === "") {
+                    document.getElementById("uErr").innerHTML = "Username is required.";
+                    valid = false;
+                }
+
+                if (p === "") {
+                    document.getElementById("pErr").innerHTML = "Password is required.";
+                    valid = false;
+                }
+
+                return valid;
+            }
+        </script>
     </h:head>
+
     <h:body>
 
+        <form name="loginForm" method="POST" onsubmit="return validateForm()">
 
-        <form method="POST">
-            <table border="1">
-                <tr>  
-                    <td>User Name</td> <td><input type="text" name="username"  value=""/></td></tr>
+            <div class="form-container">
 
-                <tr>   <td>Password </td> <td><input type="password" name="password" value=""/></td></tr>
-                <tr><td><input type="submit" value="Login"/></td><td><input type="reset" value="Reset"/></td></tr>
+                <h3>Login</h3>
 
-            </table>
+                <!-- USERNAME -->
+                <input type="text"
+                       name="username"
+                       placeholder="Enter your Username"
+                       class="form-input" />
+                <span id="uErr" class="error-msg"></span><br/>
+
+                <!-- PASSWORD -->
+                <input type="password"
+                       name="password"
+                       placeholder="Enter your Password"
+                       class="form-input" />
+                <span id="pErr" class="error-msg"></span><br/>
+
+                <!-- BUTTON -->
+                <button type="submit" class="submit-btn">Login</button>
+
+                <div class="login-link">
+                    Don't have an account? Click <a href="SignUp.jsf">Sign-up</a>
+                </div>
+            </div>
+
         </form>
+
         <br/>
-        <h:outputText id="err" style="color:red" value="#{loginBean.errorStatus}"/>
+        <h:outputText id="err" style="color:red" 
+                      value="#{loginBean.errorStatus}"/>
+
     </h:body>
 </html>

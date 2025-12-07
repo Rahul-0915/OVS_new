@@ -39,7 +39,7 @@ public class UserCDIBean {
     private String mobileNumber;
     private String password;
     private String confirmPassword;   // ⬅️ ADDED
-    private int gId = 2;              // ⬅️ BY DEFAULT
+    private int gId = 1;              // ⬅️ BY DEFAULT
     private int verification = 1;     // ⬅️ BY DEFAULT (0 = not verified)
 
     public UserCDIBean() {

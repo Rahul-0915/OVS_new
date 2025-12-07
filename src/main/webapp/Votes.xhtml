@@ -1,0 +1,109 @@
+<!-- JSF Admin Dashboard For Votes + CDI Bean Integrated -->
+<!-- You said: Only CDI Bean + JSF Page. No other code changes. -->
+
+<!-- ======================= -->
+<!--   adminVotes.xhtml      -->
+<!-- ======================= -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="jakarta.faces.facelets">
+
+<h:head>
+    <title>Admin Vote Dashboard</title>
+    <style>
+        body { font-family: Arial; background:#f2f2f2; }
+        .box { background:white; padding:20px; width:90%; margin:20px auto; border-radius:8px; }
+        table { width:100%; border-collapse:collapse; }
+        th,td { border:1px solid #ddd; padding:10px; text-align:left; }
+        th { background:#222; color:white; }
+        .btn { padding:8px 15px; background:#0066ff; color:white; border-radius:5px; border:none; cursor:pointer; }
+        .btn-red { background:#ff3333; }
+        .btn-green { background:#28a745; }
+        .title { font-size:22px; margin-bottom:15px; font-weight:bold; }
+    </style>
+</h:head>
+
+<h:body>
+    <h:form id="mainForm">
+
+        <div class="box">
+            <div class="title">Live Vote Count</div>
+            <h:commandButton value="Refresh" action="#{voteDashboard.refresh()}" styleClass="btn" />
+
+            <table>
+                <tr>
+                    <th>Vote ID</th>
+                    <th>Voter</th>
+                    <th>Candidate</th>
+                    <th>Party</th>
+                    <th>Election</th>
+                    <th>Time</th>
+                </tr>
+                <ui:repeat value="#{voteDashboard.votes}" var="v">
+                    <tr>
+                        <td>#{v.voteId}</td>
+                        <td>#{v.voters.voterName}</td>
+                        <td>#{v.candidates.candidateName}</td>
+                        <td>#{v.candidates.party.partyName}</td>
+                        <td>#{v.elections.electionName}</td>
+                        <td>#{v.timeStamp}</td>
+                    </tr>
+                </ui:repeat>
+            </table>
+        </div>
+
+        <div class="box">
+            <div class="title">Reset Votes</div>
+            <h:commandButton value="Delete All Votes" action="#{voteDashboard.resetAllVotes()}" styleClass="btn btn-red" />
+        </div>
+
+    </h:form>
+</h:body>
+</html>
+
+
+<!-- ======================= -->
+<!--   VoteDashboardBean.java -->
+<!-- ======================= -->
+
+package cdi;
+
+import EJB.UserBeanLocal;
+import Entity.Votes;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Named("voteDashboard")
+@SessionScoped
+public class VoteDashboardBean implements Serializable {
+
+    @Inject
+    private UserBeanLocal userBean;
+
+    private List<Votes> votes = new ArrayList<>();
+
+    @PostConstruct
+    public void init() {
+        refresh();
+    }
+
+    public void refresh() {
+        votes = new ArrayList<>(userBean.getAllVotes());
+    }
+
+    public void resetAllVotes() {
+        userBean.deleteAllVotes();
+        refresh();
+    }
+
+    public List<Votes> getVotes() {
+        return votes;
+    }
+}

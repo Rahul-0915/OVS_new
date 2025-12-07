@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="jakarta.faces.facelets">
+
+<h:head>
+    <title>Approved Voters</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .votersTable {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .votersTable th {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .votersTable td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #0056b3;
+            font-size: 26px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .thumb-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid #aaa;
+        }
+
+        .view-icon {
+            cursor: pointer;
+            font-size: 20px;
+            color: #0056b3;
+            transition: 0.2s;
+        }
+
+        .view-icon:hover {
+            color: #003d80;
+            transform: scale(1.2);
+        }
+        .navbar {
+    width: 100%;
+    padding: 12px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+/* TITLE */
+.nav-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #003d80;
+}
+
+/* LINKS CONTAINER */
+.nav-links {
+    display: flex;
+    gap: 28px;
+}
+
+/* LINKS */
+.nav-links a {
+    text-decoration: none;
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: 0.25s ease;
+}
+
+/* HOVER ANIMATION */
+.nav-links a:hover {
+    background: #0056b3;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ACTIVE PAGE */
+.nav-links a.active {
+    background: #0056b3;
+    color: white;
+}
+/* SEARCH AREA */
+.search-container {
+    width: 70%;
+    margin: 0 auto 20px auto;
+    text-align: center;
+}
+
+.search-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.search-box {
+    width: 32%;
+    text-align: left;
+}
+
+.search-box label {
+    font-weight: bold;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.btn-search {
+    padding: 10px 20px;
+    background: orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.navbar {
+    width: 100%;
+    padding: 12px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+/* TITLE */
+.nav-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #003d80;
+}
+
+/* LINKS CONTAINER */
+.nav-links {
+    display: flex;
+    gap: 28px;
+}
+
+/* LINKS */
+.nav-links a {
+    text-decoration: none;
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: 0.25s ease;
+}
+
+/* HOVER ANIMATION */
+.nav-links a:hover {
+    background: #0056b3;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ACTIVE PAGE */
+.nav-links a.active {
+    background: #0056b3;
+    color: white;
+}
+    </style>
+    
+</h:head>
+
+<h:body>
+
+
+<div class="navbar">
+    
+
+    <div class="nav-links">
+        <a href="ManageVoters.jsf" target="_self">New Requests</a>
+        <a href="VotersList.jsf" target="_self">Voter List</a>
+<!--        <a href="approvedVoters.xhtml" target="_self">Done</a>-->
+    </div>
+</div>
+<h:form id="searchForm">
+    <div class="search-container">
+        <div class="search-row">
+            <div class="search-box">
+                <label>ID:</label>
+                <h:inputText value="#{voterModule.searchId}" styleClass="search-input"/>
+            </div>
+            <div class="search-box">
+                <label>Name:</label>
+                <h:inputText value="#{voterModule.searchName}" styleClass="search-input"/>
+            </div>
+            <div class="search-box">
+                <label>City:</label>
+                <h:inputText value="#{voterModule.searchCity}" styleClass="search-input"/>
+            </div>
+        </div>
+        <div class="search-row">
+            <div class="search-box">
+                <label>Start Date:</label>
+                <h:inputText value="#{voterModule.startDate}" styleClass="search-input">
+                    <f:convertDateTime pattern="dd-MM-yyyy"/>
+                </h:inputText>
+            </div>
+            <div class="search-box">
+                <label>End Date:</label>
+                <h:inputText value="#{voterModule.endDate}" styleClass="search-input">
+                    <f:convertDateTime pattern="dd-MM-yyyy"/>
+                </h:inputText>
+            </div>
+            <div class="search-box" style="display:flex; align-items:flex-end; gap:10px;">
+                <h:commandButton value="Search" action="#{voterModule.searchVoters}" styleClass="btn-search" />
+                <h:commandButton value="Clear" action="#{voterModule.clearSearch}" immediate="true" styleClass="btn-search"/>
+            </div>
+        </div>
+    </div>
+</h:form>
+    <!-- Print Button -->
+<h:form style="text-align:center; margin-bottom:20px;">
+    <h:commandButton value="Print" type="button" onclick="printVoterList()" styleClass="btn-search"/>
+</h:form>
+
+<!-- Approved Voters Table -->
+<table class="votersTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Aadhar No</th>
+            <th>Aadhar File</th>
+            <th>DOB</th>
+            <th>City</th>
+            <th>Pincode</th>
+            <th>Address</th>
+            <th>Issue Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ui:repeat value="#{voterModule.approvedList}" var="v">
+            <tr>
+                <td>#{v.voterId}</td>
+                <td><img src="#{v.voterImage}" class="thumb-img"/></td>
+                <td>#{v.voterName}</td>
+                <td>#{v.mobileNumber}</td>
+                <td>#{v.emailId}</td>
+                <td>#{v.adharNumber}</td>
+                <td>
+                    <a href="#{v.adharFile}" target="_blank" title="View Aadhar File">
+                        <span class="view-icon">&#128065;</span>
+                    </a>
+                </td>
+                <td><h:outputText value="#{v.dob}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText></td>
+                <td>#{v.city}</td>
+                <td>#{v.pincode}</td>
+                <td>#{v.address}</td>
+                <td><h:outputText value="#{v.issueDate}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText></td>
+            </tr>
+        </ui:repeat>
+    </tbody>
+</table>
+<!-- Hidden voter list -->
+<div id="voterListPrintable" style="display:none;">
+    <ui:repeat value="#{voterModule.approvedList}" var="v">
+        <div class="voter-card">
+            <!-- Passport-size image on the left -->
+            <div class="voter-img">
+                <img src="#{v.voterImage}" />
+            </div>
+
+            <!-- Voter details -->
+            <div class="voter-details">
+                <b>ID:</b> #{v.voterId}<br/>
+                <b>Name:</b> #{v.voterName}<br/>
+                <b>Mobile:</b> #{v.mobileNumber}<br/>
+                <b>Email:</b> #{v.emailId}<br/>
+                <b>Aadhar No:</b> #{v.adharNumber}<br/>
+                <b>City:</b> #{v.city}<br/>
+                <b>Pincode:</b> #{v.pincode}<br/>
+                <b>Address:</b> #{v.address}<br/>
+                <b>Issue Date:</b> <h:outputText value="#{v.issueDate}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
+            </div>
+        </div>
+    </ui:repeat>
+</div>
+<!-- CSS for cards -->
+<style>
+#voterListPrintable {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.voter-card {
+    display: flex;
+    width: 32%; /* 3 cards per row */
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.voter-img {
+    width: 80px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+.voter-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+.voter-details {
+    font-size: 14px;
+    overflow: hidden;
+}
+
+/* Print only the div */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #voterListPrintable, #voterListPrintable * {
+        visibility: visible;
+    }
+    #voterListPrintable {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+function printVoterList() {
+    var element = document.getElementById('voterListPrintable');
+    element.style.display = 'flex';
+    window.print();
+    element.style.display = 'none';
+}
+</script>
+
+</h:body>
+</html>

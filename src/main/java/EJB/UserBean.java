@@ -14,6 +14,7 @@ import Entity.Votes;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.util.Collection;
@@ -74,6 +75,7 @@ public class UserBean implements UserBeanLocal {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         return em.find(Voters.class, voterId);
     }
+    
 
     @Override
     public Collection<Voters> getAllVoters() {
@@ -99,26 +101,32 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
-    public void updateVoter(int voterId, String voterName, int mobileNumber, int adharNumber, String emailId, Date dob, String city, int pincode, String address, String adharFilePath, String voterImagePath) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        Voters v = em.find(Voters.class, voterId);
-        if (v != null) {
-            v.setVoterName(voterName);
-            v.setMobileNumber(mobileNumber);
-            v.setAdharNumber(adharNumber);
-            v.setEmailId(emailId);
-            v.setDob(dob);
-            v.setCity(city);
-            v.setPincode(pincode);
-            v.setAddress(address);
-            v.setAdharFile(adharFilePath);
-            v.setVoterImage(voterImagePath);
-            em.merge(v);
-            System.out.println("Voter updated successfully: " + voterName);
-        } else {
-            System.out.println(" Voter not found with ID: " + voterId);
-        }
+public void updateVoter(int voterId, String voterName, int mobileNumber, int adharNumber, String emailId, 
+                        Date dob, String city, int pincode, String address, String adharFilePath, 
+                        String voterImagePath, int status, Date issueDate) {
+    Voters v = em.find(Voters.class, voterId);
+    if (v != null) {
+        v.setVoterName(voterName);
+        v.setMobileNumber(mobileNumber);
+        v.setAdharNumber(adharNumber);
+        v.setEmailId(emailId);
+        v.setDob(dob);
+        v.setCity(city);
+        v.setPincode(pincode);
+        v.setAddress(address);
+        v.setAdharFile(adharFilePath);
+        v.setVoterImage(voterImagePath);
+
+        // ✅ Status aur issueDate update
+        v.setStatus(status);
+        v.setIssueDate(issueDate);
+
+        em.merge(v);
+        System.out.println("Voter updated successfully: " + voterName);
+    } else {
+        System.out.println("Voter not found with ID: " + voterId);
     }
+}
 
     // votes....................................................................
     @Override
@@ -201,5 +209,17 @@ public class UserBean implements UserBeanLocal {
             throw e;  // REST ko exception bhejne ke liye
         }
     }
+
+   @Override
+public Voters findByVoterName(String voterName) {
+    try {
+        return em.createNamedQuery("Voters.findByVoterName", Voters.class)
+                 .setParameter("voterName", voterName)
+                 .getSingleResult();
+    } catch (NoResultException e) {
+        return null; // or handle it as per your requirement
+    }
+}
+
     
 }

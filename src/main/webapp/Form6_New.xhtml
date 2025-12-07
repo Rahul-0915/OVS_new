@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:head>
+    <title>New Voter Registration Form</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #f4f6f9;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            width: 70%;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        h2.title {
+            text-align: center;
+            color: #0D47A1;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .full {
+            grid-column: span 2;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #0D47A1;
+            color: white;
+            border: none;
+            font-size: 18px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #08306d;
+        }
+    </style>
+</h:head>
+
+<h:body>
+
+    <div class="form-container">
+
+        <h2 class="title">New Voter Registration</h2>
+
+        <h:form enctype="multipart/form-data">
+
+            <div class="grid">
+
+                <!-- NAME -->
+                <div class="input-group">
+                    <label>Full Name *</label>
+                    <h:inputText value="#{voterBean.voterName}" required="true"/>
+                </div>
+
+                <!-- MOBILE -->
+                <div class="input-group">
+                    <label>Mobile Number *</label>
+                    <h:inputText value="#{voterBean.mobileNumber}" maxlength="10" required="true"/>
+                </div>
+
+                <!-- AADHAAR -->
+                <div class="input-group">
+                    <label>Aadhaar Number *</label>
+                    <h:inputText value="#{voterBean.adharNumber}" maxlength="12" required="true"/>
+                </div>
+
+                <!-- EMAIL -->
+                <div class="input-group">
+                    <label>Email ID</label>
+                    <h:inputText value="#{voterBean.emailId}"/>
+                </div>
+
+                <!-- DOB -->
+                <div class="input-group">
+                    <label>Date of Birth *</label>
+                    <h:inputText type="date" value="#{voterBean.dob}" required="true"/>
+                </div>
+
+                <!-- CITY -->
+                <div class="input-group">
+                    <label>City *</label>
+                    <h:inputText value="#{voterBean.city}" required="true"/>
+                </div>
+
+                <!-- PINCODE -->
+                <div class="input-group">
+                    <label>Pincode *</label>
+                    <h:inputText value="#{voterBean.pincode}" maxlength="6" required="true"/>
+                </div>
+
+                <!-- ADDRESS -->
+                <div class="input-group full">
+                    <label>Address *</label>
+                    <h:inputTextarea value="#{voterBean.address}" rows="3" required="true"/>
+                </div>
+
+                <!-- AADHAAR FILE UPLOAD -->
+                <div class="input-group full">
+                    <label>Upload Aadhaar (PDF/JPG/PNG)</label>
+                    <h:inputFile value="#{voterBean.adharFile}"/>
+                </div>
+
+                <!-- VOTER PHOTO UPLOAD -->
+                <div class="input-group full">
+                    <label>Applicant Photograph (Passport Size)</label>
+                    <h:inputFile value="#{voterBean.voterImage}"/>
+                </div>
+
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button class="submit-btn" type="submit">Submit Application</button>
+
+        </h:form>
+
+    </div>
+
+</h:body>
+
+</html>
