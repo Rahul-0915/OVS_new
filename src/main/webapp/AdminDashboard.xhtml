@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Admin Dashboard</title>
+    <link href="CSS/AdminDashboard.css" rel="stylesheet" type="text/css"/>
+    <script>
+        function loadPage(page) {
+            document.getElementById("contentFrame").src = page;
+        }
+    </script>
+</h:head>
+
+<h:body>
+
+    <div class="layout">
+
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar">
+            <h3 style="color:white; text-align:center; margin-bottom:20px;">Admin Panel</h3>
+
+            <p:panelMenu styleClass="panelMenuCustom">
+
+                <p:submenu label="Elections" icon="pi pi-briefcase">
+                    <p:menuitem value="Manage Elections"
+                                onclick="loadPage('ManageElection.jsf')" />
+
+                    <p:menuitem value="Add Election"
+                                icon="pi pi-plus"
+                                onclick="loadPage('ElectionAdd.jsf')" />
+                </p:submenu>
+
+                <p:submenu label="Parties" icon="pi pi-users">
+                    <p:menuitem value="Manage Parties"
+                                onclick="loadPage('ManageParties.jsf')" />
+                     <p:menuitem value="Add Parties"
+                                icon="pi pi-plus"
+                                onclick="loadPage('PartiesAdd.jsf')" />
+                </p:submenu>
+
+                <p:submenu label="Candidates" icon="pi pi-id-card">
+                    <p:menuitem value="Manage Candidates"
+                                onclick="loadPage('ManageCandidates.jsf')" />
+                    <p:menuitem value="Add Candidate"
+                                icon="pi pi-plus"
+                                onclick="loadPage('CandidatesAdd.jsf')" />
+                </p:submenu>
+
+                <p:submenu label="Voters" icon="pi pi-user">
+                    <p:menuitem value="Manage Voters"
+                                onclick="loadPage('pages/ManageVoters.xhtml')" />
+                </p:submenu>
+
+                <p:menuitem value="Results"
+                            icon="pi pi-chart-line"
+                            onclick="loadPage('pages/Results.xhtml')" />
+            </p:panelMenu>
+
+        </div>
+
+        <!-- RIGHT SECTION -->
+        <div class="main">
+
+            <!-- HEADER -->
+            <div class="header">
+                <h3>Online Voting Admin</h3>
+
+                <h:form>
+                    <p:commandButton value="Logout"
+                                     icon="pi pi-sign-out"
+                                     styleClass="" style="background-color:#314F6F" />
+                </h:form>
+            </div>
+
+            
+<!--            <div class="top-menu" style="margin:10px 0; padding:10px; background:white; border-radius:8px;">
+                <a href="#" onclick="loadPage('pages/Dashboard.xhtml')" class="top-item">Dashboard</a>
+                <a href="#" onclick="loadPage('Login.xhtml')" class="top-item">Elections</a>
+                <a href="#" onclick="loadPage('pages/ManageParties.xhtml')" class="top-item">Parties</a>
+                <a href="#" onclick="loadPage('pages/ManageCandidates.xhtml')" class="top-item">Candidates</a>
+                <a href="#" onclick="loadPage('pages/ManageVoters.xhtml')" class="top-item">Voters</a>
+                <a href="#" onclick="loadPage('pages/Results.xhtml')" class="top-item">Results</a>
+            </div>-->
+
+            <!-- PAGE LOADER (IFRAME) -->
+            <div class="content">
+                <iframe id="contentFrame" src=""
+                        style="width:100%; height:100vh; border:none;"></iframe>
+            </div>
+
+        </div>
+    </div>
+
+</h:body>
+</html>

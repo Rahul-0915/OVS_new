@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Voting System - Add Election</title>
+    <link href="CSS/Election.css" rel="stylesheet" type="text/css"/>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</h:head>
+
+<h:body>
+    <div class="container">
+    <h2>Add New Election</h2>
+
+    <h:form>
+
+        <!-- Row 1: ID + Name -->
+        <div class="row">
+            <div class="col">
+                <label for="eId">Election ID</label>
+                <h:inputText id="eId" value="#{adminCDIBean.eId}" 
+                    required="true" requiredMessage="Please enter Election ID">
+                    <f:validateLongRange minimum="1" />
+                </h:inputText>
+                <h:message for="eId" styleClass="error-msg"/>
+            </div>
+
+            <div class="col">
+                <label for="electionName">Election Name</label>
+                <h:inputText id="electionName" value="#{adminCDIBean.electionName}" 
+                    required="true" requiredMessage="Please enter Election Name"/>
+                <h:message for="electionName" styleClass="error-msg"/>
+            </div>
+        </div>
+
+        <!-- Row 2: Start Date + End Date -->
+        <div class="row">
+            <div class="col">
+                <label for="startDate">Start Date</label>
+                <h:inputText id="startDate" value="#{adminCDIBean.startDate}" type="date"
+                    required="true" requiredMessage="Please select Start Date">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </h:inputText>
+                <h:message for="startDate" styleClass="error-msg"/>
+            </div>
+
+            <div class="col">
+                <label for="endDate">End Date</label>
+                <h:inputText id="endDate" value="#{adminCDIBean.endDate}" type="date"
+                    required="true" requiredMessage="Please select End Date">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </h:inputText>
+                <h:message for="endDate" styleClass="error-msg"/>
+            </div>
+        </div>
+
+        <!-- Row 3: Status + Description -->
+        <div class="row">
+            <div class="col">
+                <label for="status">Status</label>
+                <h:selectOneMenu id="status" value="#{adminCDIBean.status}" required="true"
+                    requiredMessage="Please select Status">
+                    <f:selectItem itemLabel="Select Status" itemValue="" />
+                    <f:selectItem itemLabel="Upcoming" itemValue="Upcoming" />
+                    <f:selectItem itemLabel="Ongoing" itemValue="Ongoing" />
+                    <f:selectItem itemLabel="Complete" itemValue="Complete" />
+                </h:selectOneMenu>
+                <h:message for="status" styleClass="error-msg"/>
+            </div>
+
+            <div class="col">
+                <label for="desc">Description</label>
+                <h:inputTextarea id="desc" value="#{adminCDIBean.desc}" rows="1"
+                    required="true" requiredMessage="Please enter Description"/>
+                <h:message for="desc" styleClass="error-msg"/>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <h:commandButton value="Add Election"
+                 action="#{adminCDIBean.addElection}"
+                 styleClass="btn-submit">
+    <f:ajax execute="@form" render="@form"/>
+</h:commandButton>
+
+
+    </h:form>
+</div>
+
+</h:body>
+</html>

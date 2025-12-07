@@ -1,0 +1,101 @@
+/* ======= Reset ======= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* ======= Page Background ======= */
+body {
+    background: #eef1f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* ======= Form Container ======= */
+.form-container {
+    width: 350px;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+/*    text-align: center;*/
+}
+
+/* ======= Title ======= */
+.form-container h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+    
+}
+
+/* ======= Input Fields ======= */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border: 1px solid #cdd2d8;
+    border-radius: 4px;
+    font-size: 15px;
+    background: #f9f9f9;
+    transition: 0.3s;
+}
+
+/* Focus Effect */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #4a90e2;
+    background: #ffffff;
+    outline: none;
+}
+
+/* ======= Error Message ======= */
+.error-msg {
+    color: red;
+    font-size: 13px;
+    text-align: left;
+    margin-top: -2px;
+    margin-bottom: 1px;
+    
+    
+}
+
+/* ======= Signup Button ======= */
+.submit-btn {
+    width: 100%;
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background: #357ac9;
+}
+
+/* ======= Login Link ======= */
+.login-link {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}

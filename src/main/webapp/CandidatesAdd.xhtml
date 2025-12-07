@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Add Candidate</title>
+    <link href="CSS/Candidates.css" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
+}
+
+/* ====== CONTAINER ====== */
+.container {
+    width: 60%;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px 35px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+/* ====== FORM GRID ====== */
+.row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+.col {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+/* ====== INPUTS ====== */
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+textarea {
+    resize: none;
+}
+
+/* ====== ERROR MESSAGE ====== */
+.error-msg {
+    color: red;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+/* ====== BUTTON ====== */
+.btn-submit {
+    width: 100%;
+    background: #28a745;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 17px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.btn-submit:hover {
+    background: #218838;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+    .col {
+        width: 100%;
+    }
+    .container {
+        width: 90%;
+    }
+}
+
+    </style>
+        
+</h:head>
+
+<h:body>
+
+<div class="container">
+    <h2>Add New Candidate</h2>
+
+    <h:form>
+
+        <!-- ROW 1: ID + Name -->
+        <div class="row">
+
+            <div class="col">
+                <label for="cid">Candidate ID</label>
+                <h:inputText id="cid" value="#{candidateCDIBean.candidateId}"
+                             required="true" requiredMessage="Please enter Candidate ID">
+                    <f:validateLongRange minimum="1"/>
+                </h:inputText>
+                <h:message for="cid" styleClass="error-msg"/>
+            </div>
+
+            <div class="col">
+                <label for="cname">Candidate Name</label>
+                <h:inputText id="cname" value="#{candidateCDIBean.candidateName}"
+                             required="true" requiredMessage="Please enter Candidate Name"/>
+                <h:message for="cname" styleClass="error-msg"/>
+            </div>
+
+        </div>
+
+        <!-- ROW 2: Nomination Date + Election -->
+        <div class="row">
+
+            <div class="col">
+                <label for="nomDate">Nomination Date</label>
+                <h:inputText id="nomDate" type="date"
+                             value="#{candidateCDIBean.nominationDate}"
+                             required="true" requiredMessage="Please select Nomination Date">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </h:inputText>
+                <h:message for="nomDate" styleClass="error-msg"/>
+            </div>
+
+            <div class="col">
+                <label for="elec">Select Election</label>
+                <h:selectOneMenu id="elec" value="#{candidateCDIBean.electionId}"
+                                 required="true" requiredMessage="Please select an Election">
+                    <f:selectItem itemLabel="Select Election" itemValue=""/>
+                    <f:selectItems value="#{candidateCDIBean.allElections}" var="e"
+                                   itemValue="#{e.electionId}" itemLabel="#{e.electionName}"/>
+                </h:selectOneMenu>
+                <h:message for="elec" styleClass="error-msg"/>
+            </div>
+
+        </div>
+
+        <!-- ROW 3: Party -->
+        <div class="row">
+            <div class="col">
+                <label for="party">Select Party</label>
+                <h:selectOneMenu id="party" value="#{candidateCDIBean.partyId}"
+                                 required="true" requiredMessage="Please select a Party">
+                    <f:selectItem itemLabel="Select Party" itemValue=""/>
+                    <f:selectItems value="#{candidateCDIBean.allParties}" var="p"
+                                   itemValue="#{p.partyId}" itemLabel="#{p.partyName}"/>
+                </h:selectOneMenu>
+                <h:message for="party" styleClass="error-msg"/>
+            </div>
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <h:commandButton value="Add Candidate"
+                         action="#{candidateCDIBean.addCandidate}"
+                         styleClass="btn-submit">
+            <f:ajax execute="@form" render="@form"/>
+        </h:commandButton>
+
+    </h:form>
+</div>
+
+</h:body>
+</html>

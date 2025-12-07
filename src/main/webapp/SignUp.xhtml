@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="jakarta.faces.core">
+
+    <h:head>
+        <title>Sign-up</title>
+        <link href="CSS/Forms.css" rel="stylesheet" type="text/css"/>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </h:head>
+
+    <h:body>
+
+        <h:form>
+
+            <div class="form-container">
+
+                <h3>Sign-up</h3>
+
+                <!-- USERNAME -->
+                <h:inputText id="uname" value="#{UserCDIBean.userName}" 
+                             required="true"
+                             requiredMessage="Full Name is required."
+                             validatorMessage="Enter Valid UserName"
+                             a:placeholder="Enter your full name" />
+                <h:message for="uname" styleClass="error-msg" /><br/>
+
+                <!-- EMAIL -->
+
+                <h:inputText id="userEmail" value="#{UserCDIBean.emailId}"
+                             required="true" 
+                             requiredMessage="Email address is required."
+                             validatorMessage="Enter Valid Emailid"
+                             a:placeholder="Enter your email address">
+                    <f:validateRegex pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"/>
+                </h:inputText>
+                <h:message for="userEmail" styleClass="error-msg" /><br/>
+                <!-- MOBILE NUMBER -->
+                <h:inputText id="mobileNumber"
+                             value="#{UserCDIBean.mobileNumber}"
+                             required="true"
+                             requiredMessage="Please enter mobile number"
+                             validatorMessage="Enter Valid Mobile Number"
+                              a:placeholder="Enter your Mobile Number">
+                              
+                    <f:validateRegex pattern="^[0-9]{10}$"/>
+                </h:inputText>
+
+                <h:message for="mobileNumber" style="color:red" styleClass="error-msg"/>
+                <br/>
+
+
+                <!-- PASSWORD -->
+                <h:inputSecret id="password" value="#{UserCDIBean.password}"               
+                               required="true" 
+                               requiredMessage="Password is required."
+                               validatorMessage="Enter Valid Password"
+                               a:placeholder="Create a secure password">
+                    <f:validateRegex pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&amp;]).{8,}$"/>
+                </h:inputSecret>
+                <h:message for="password" styleClass="error-msg"/><br/>
+
+                <!-- CONFIRM PASSWORD -->
+                <h:inputSecret id="confirmPassword" value="#{UserCDIBean.confirmPassword}"
+                               required="true" 
+                               requiredMessage="Please confirm your password."
+                               a:placeholder="Re-enter your password" />
+                <h:message for="confirmPassword" styleClass="error-msg"/><br/>
+
+                <!-- SUBMIT BUTTON -->
+                <h:commandButton value="Sign-up"
+                                 action="#{UserCDIBean.insertUser}"
+                                 styleClass="submit-btn">
+                    <f:ajax execute="@form" render="@form"/>
+                </h:commandButton>
+
+                <!-- LOGIN LINK -->
+                <div class="login-link">
+                    Already have an account? <a href="Login.jsf">Login</a>
+                </div>
+
+            </div>
+        </h:form>
+
+    </h:body>
+
+</html>

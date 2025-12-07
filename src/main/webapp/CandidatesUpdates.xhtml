@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Update Candidate</title>
+    <link href="CSS/Election.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</h:head>
+
+<h:body>
+    <div class="container">
+        <h2>Update Candidate</h2>
+
+        <h:form>
+
+            <div class="row">
+
+                <div class="col">
+                    <label>ID</label>
+                    <h:inputText value="#{candidateCDIBean.candidateId}"
+                                 readonly="true"
+                                 style="background:#eee; cursor:not-allowed;" />
+                </div>
+
+                <div class="col">
+                    <label>Name</label>
+                    <h:inputText value="#{candidateCDIBean.candidateName}"
+                                 required="true"
+                                 requiredMessage="Candidate name required"/>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col">
+                    <label>Nomination Date</label>
+                    <h:inputText type="date" value="#{candidateCDIBean.nominationDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
+                </div>
+
+                <div class="col">
+                    <label>Election</label>
+                    <h:selectOneMenu value="#{candidateCDIBean.electionId}">
+                        <f:selectItems value="#{candidateCDIBean.allElections}" var="e"
+                                       itemValue="#{e.electionId}"
+                                       itemLabel="#{e.electionName}" />
+                    </h:selectOneMenu>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col">
+                    <label>Party</label>
+                    <h:selectOneMenu value="#{candidateCDIBean.partyId}">
+                        <f:selectItems value="#{candidateCDIBean.allParties}" var="p"
+                                       itemValue="#{p.partyId}"
+                                       itemLabel="#{p.partyName}" />
+                    </h:selectOneMenu>
+                </div>
+
+            </div>
+
+            <div class="row" style="text-align:center; margin-top:20px;">
+                <h:commandButton value="Update Candidate"
+                                 action="#{candidateCDIBean.updateCandidate}"
+                                 styleClass="btn-submit"/>
+
+                <h:button value="Cancel" outcome="ManageCandidates.xhtml"
+                          styleClass="btn-submit"/>
+            </div>
+
+        </h:form>
+    </div>
+</h:body>
+</html>

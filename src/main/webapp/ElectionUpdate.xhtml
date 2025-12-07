@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Update Election</title>
+    <link href="CSS/Election.css" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</h:head>
+
+<h:body onload="#{adminCDIBean.loadElectionForUpdate()}">
+    <div class="container">
+        <h2>Update Election</h2>
+
+        <h:form id="updateForm">
+            
+            <!-- Row 1 -->
+            <div class="row">
+                <div class="col">
+                    <label>Election ID</label>
+                    <h:inputText value="#{adminCDIBean.eId}"
+                                 readonly="true"
+                                 style="background:#eee; cursor:not-allowed;"/>
+                </div>
+
+                <div class="col">
+                    <label>Election Name</label>
+                    <h:inputText value="#{adminCDIBean.electionName}"
+                                 required="true"
+                                 requiredMessage="Election name is required"/>
+                    <h:message for="electionName" style="color:red; font-size:12px;"/>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row">
+                <div class="col">
+                    <label>Start Date</label>
+                    <h:inputText type="date" value="#{adminCDIBean.startDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
+                </div>
+
+                <div class="col">
+                    <label>End Date</label>
+                    <h:inputText type="date" value="#{adminCDIBean.endDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="row">
+                <div class="col">
+                    <label>Status</label>
+                    <h:selectOneMenu value="#{adminCDIBean.status}">
+                        <f:selectItem itemLabel="Select" itemValue=""/>
+                        <f:selectItem itemLabel="Upcoming" itemValue="Upcoming"/>
+                        <f:selectItem itemLabel="Ongoing" itemValue="Ongoing"/>
+                        <f:selectItem itemLabel="Complete" itemValue="Complete"/>
+                    </h:selectOneMenu>
+                </div>
+
+                <div class="col">
+                    <label>Description</label>
+                    <h:inputTextarea rows="2" value="#{adminCDIBean.desc}" />
+                </div>
+            </div>
+
+            <!-- Update Button -->
+            <div class="row" style="text-align:center; margin-top:20px;">
+                <h:commandButton value="Update Election"
+                                 action="#{adminCDIBean.updateElection}"
+                                 styleClass="btn-submit">
+                    <f:ajax execute="@form" render="@form"/>
+                </h:commandButton>
+                
+                <h:button value="Cancel" outcome="ManageElection.jsf" styleClass="btn-submit" />
+            </div>
+
+        </h:form>
+    </div>
+</h:body>
+</html>

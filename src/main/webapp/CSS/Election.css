@@ -1,0 +1,98 @@
+/* GRID ROW */
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 15px;
+}
+
+/* COLUMN */
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Align textarea like inputs */
+textarea {
+    height: 46px;
+}
+
+/* Make form container look rectangular and clean */
+.container {
+    width: 650px;
+    background: #ffffff;
+    padding: 30px 35px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    border: 1px solid #dce2eb;
+    
+    margin: auto;
+    margin-top: 40px;
+}
+
+/* Adjust labels & inputs (your previous theme) */
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+/* Inputs same as before */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cdd2d8;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+/* Green Button */
+h\:commandButton {
+    margin-top: 10px;
+    width: 100% !important;
+    padding: 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+h\:commandButton:hover {
+    background: #1e7e34;
+}
+.btn-submit {
+    background-color: #28a745;   /* green */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #218838;
+    transform: scale(1.03);
+}
+
+
+
+.btn-submit:active {
+    background-color: #1e7e34;
+}
+.error-msg {
+    color: red;
+    font-size: 17px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+    display: block;
+    font-weight: 500;
+}

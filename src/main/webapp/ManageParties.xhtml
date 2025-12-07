@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>Manage Parties</title>
+
+    <style>
+        /* =================== GLOBAL =================== */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* =================== SEARCH AREA =================== */
+        .search-container {
+            width: 70%;
+            margin: 0 auto 20px auto;
+            text-align: center;
+        }
+
+        .search-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            width: 48%;
+        }
+
+        .search-box label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .search-input-large {
+            padding: 10px 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .btn-search {
+            padding: 8px 20px;
+            font-size: 15px;
+            background-color: orange;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btndiv {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-search:hover {
+            background-color: darkorange;
+        }
+
+        /* =================== TABLE =================== */
+        .party-table {
+            width: 70%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .party-table th, .party-table td {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .party-table th {
+            background-color:#0056b3;
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .party-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .party-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* =================== BUTTONS =================== */
+        .btn-edit, .btn-delete, .btn-add {
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 13px;
+            margin-right: 5px;
+        }
+
+        .btn-edit {
+            background-color: #28a745;
+        }
+
+        .btn-edit:hover {
+            background-color: #218838;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .btn-add {
+            background-color: #007bff;
+        }
+
+        .btn-add:hover {
+            background-color: #0056b3;
+        }
+
+        /* =================== RESPONSIVE =================== */
+        @media (max-width: 768px) {
+            .search-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .party-table {
+                width: 100%;
+            }
+        }
+    </style>
+</h:head>
+
+<h:body>
+
+<!-- ===================== SEARCH AREA ===================== -->
+<h:form id="searchForm" style="text-align:center;">
+    <div class="search-container">
+
+        <!-- FIRST ROW -->
+        <div class="search-row">
+            <div class="search-box">
+                <label>Party ID:</label>
+                <h:inputText value="#{partyCDIBean.partyId}" styleClass="search-input-large"/>
+            </div>
+
+            <div class="search-box">
+                <label>Party Name:</label>
+                <h:inputText value="#{partyCDIBean.partyName}" styleClass="search-input-large"/>
+            </div>
+        </div>
+
+        <!-- SECOND ROW -->
+        <div class="search-row">
+            <div class="search-box">
+                <label>Leader Name:</label>
+                <h:inputText value="#{partyCDIBean.leaderName}" styleClass="search-input-large"/>
+            </div>
+
+            <div class="search-box">
+                <label>Founded Year:</label>
+                <h:inputText value="#{partyCDIBean.foundedYear}" styleClass="search-input-large"/>
+            </div>
+        </div>
+
+        <div class="btndiv">
+            <h:commandButton value="Search" action="#{partyCDIBean.searchParty}" styleClass="btn-search"/>
+            <h:commandButton value="Clear" action="#{partyCDIBean.clearFilters}" styleClass="btn-search"/>
+            
+        </div>
+
+    </div>
+</h:form>
+
+<!-- ===================== TABLE ===================== -->
+<h:form id="tableForm" style="display:flex; justify-content:center;">
+    <table class="party-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Leader</th>
+            <th>Founded Year</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+<ui:repeat value="#{partyCDIBean.partyList}" var="p">
+    <tr>
+        <td>#{p.partyId}</td>
+        <td>#{p.partyName}</td>
+        
+        <!-- SYMBOL AS IMAGE -->
+        <td>
+            <h:graphicImage value="#{p.partySymbol}" 
+                            width="50" height="50" 
+                            alt="Symbol of #{p.partyName}" />
+        </td>
+        
+        <td>#{p.leaderName}</td>
+        <td>#{p.foundedYear}</td>
+
+        <td>
+            <div class="btndiv">
+                <!-- EDIT BUTTON -->    
+                <a href="PartiesUpdate.jsf?id=#{p.partyId}" class="btn-edit">Edit</a>
+
+                <!-- DELETE BUTTON -->
+                <h:commandLink value="Delete"
+                               action="#{partyCDIBean.deleteParty(p.partyId)}"
+                               styleClass="btn-delete"
+                               onclick="return confirm('Are you sure?')">
+                    <f:ajax render="@form"/>
+                </h:commandLink>
+            </div>
+        </td>
+    </tr>
+</ui:repeat>
+</tbody>
+
+    </table>
+</h:form>
+
+</h:body>
+</html>
