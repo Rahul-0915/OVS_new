@@ -31,6 +31,9 @@ public interface UserBeanLocal {
 
     Voters findByVoterId(int voterId);
     
+    Voters findByAdharNumber(long adharNumber);
+
+    
     Voters findByVoterName(String voterName);
 
     Collection<Voters> getAllVoters();

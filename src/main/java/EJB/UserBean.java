@@ -221,5 +221,17 @@ public Voters findByVoterName(String voterName) {
     }
 }
 
+    @Override
+public Voters findByAdharNumber(long adharNumber) {
+    try {
+        return em.createQuery("SELECT v FROM Voters v WHERE v.adharNumber = :a", Voters.class)
+                 .setParameter("a", adharNumber)
+                 .getSingleResult();
+    } catch (Exception e) {
+        return null; // not found
+    }
+}
+
+
     
 }
