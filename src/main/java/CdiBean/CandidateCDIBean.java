@@ -130,7 +130,7 @@ public class CandidateCDIBean implements Serializable {
     public String updateCandidate() {
         abl.updateCandidate(candidateId, candidateName, nominationDate, electionId, partyId);
         clearForm();
-        return "ManageCandidates.xhtml?faces-redirect=true";
+        return "faces-redirect=true";
     }
 
     // ================= CLEAR FORM =================

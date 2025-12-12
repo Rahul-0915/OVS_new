@@ -313,4 +313,13 @@ public class AdminBean implements AdminBeanLocal {
     public String saySecureHello() {
         return "Secure Hello from Secure Bean";
     }
+     @Override
+    public Elections findElectionById(Integer electionId) {
+        try {
+            return em.find(Elections.class, electionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

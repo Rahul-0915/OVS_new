@@ -70,5 +70,10 @@ public interface AdminBeanLocal {
     void deleteParty(Integer partyId);
     
     public String saySecureHello();
+    
+    
+    Elections findElectionById(Integer electionId);
+
+
 
 }

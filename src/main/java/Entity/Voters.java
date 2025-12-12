@@ -57,9 +57,9 @@ public class Voters implements Serializable {
     @Column(name = "voter_name")
     private String voterName;
     @Column(name = "mobile_number")
-    private Integer mobileNumber;
+    private long  mobileNumber;
     @Column(name = "adhar_number")
-    private Integer adharNumber;
+    private long  adharNumber;
     @Size(max = 50)
     @Column(name = "email_id")
     private String emailId;
@@ -115,19 +115,19 @@ public class Voters implements Serializable {
         this.voterName = voterName;
     }
 
-    public Integer getMobileNumber() {
+    public long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(Integer mobileNumber) {
+    public void setMobileNumber(long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
-    public Integer getAdharNumber() {
+    public long getAdharNumber() {
         return adharNumber;
     }
 
-    public void setAdharNumber(Integer adharNumber) {
+    public void setAdharNumber(long adharNumber) {
         this.adharNumber = adharNumber;
     }
 
@@ -245,7 +245,12 @@ public class Voters implements Serializable {
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    return this.voterName == null && this.mobileNumber == 0 && this.adharNumber == 0;
+}
+
+
+//    public void setAdharNumber(long adharNumber) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
 
 }

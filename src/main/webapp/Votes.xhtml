@@ -1,109 +1,276 @@
-<!-- JSF Admin Dashboard For Votes + CDI Bean Integrated -->
-<!-- You said: Only CDI Bean + JSF Page. No other code changes. -->
-
-<!-- ======================= -->
-<!--   adminVotes.xhtml      -->
-<!-- ======================= -->
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
-    <title>Admin Vote Dashboard</title>
-    <style>
-        body { font-family: Arial; background:#f2f2f2; }
-        .box { background:white; padding:20px; width:90%; margin:20px auto; border-radius:8px; }
-        table { width:100%; border-collapse:collapse; }
-        th,td { border:1px solid #ddd; padding:10px; text-align:left; }
-        th { background:#222; color:white; }
-        .btn { padding:8px 15px; background:#0066ff; color:white; border-radius:5px; border:none; cursor:pointer; }
-        .btn-red { background:#ff3333; }
-        .btn-green { background:#28a745; }
-        .title { font-size:22px; margin-bottom:15px; font-weight:bold; }
-    </style>
+    <title>Voting</title>
+
+    <h:outputStylesheet>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f6f7;
+            margin: 0;
+            
+            padding: 400px;   /* Page 4-side spacing */
+            padding-top:10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a73e8;
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* CARD */
+        .card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        h3 {
+            margin: 0 0 15px 0;
+            padding-left: 10px;
+            border-left: 4px solid #1a73e8;
+            font-size: 20px;
+            color: #333;
+        }
+
+        input, select {
+             
+            width: 60%;
+            padding: 10px 12px;
+            border: 1px solid #cfcfcf;
+            border-radius: 8px;
+            
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .messages {
+            width: 90%;
+            margin: 10px auto;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+
+        button, .ui-commandbutton {
+            background: #1a73e8 !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 6px !important;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+            width: 20px;
+        }
+
+        button:hover, .ui-commandbutton:hover {
+            background: #0f5dc9 !important;
+        }
+
+        /* CANDIDATE TABLE */
+        .table {
+            width: 90%;
+            margin:auto;
+            border-collapse: collapse !important;
+            margin-top: 15px;
+        }
+
+        .table th {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 12px;
+            font-size: 15px;
+            border-bottom: 2px solid #d0d9ff;
+        }
+
+        .table td {
+            padding: 14px;
+            border-bottom: 1px solid #ececec;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .table tr:hover {
+            background: #f8fbff;
+        }
+
+        /* PARTY LOGO */
+        .logo-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #eee;
+            margin-bottom: 5px;
+        }
+
+        .refresh-msg {
+            display: none;
+            background: #e8f0fe;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid #cddaff;
+            font-weight: bold;
+            color: #1a73e8;
+            width: 60%;
+            margin: 15px auto;
+        }
+
+        pre {
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+    </h:outputStylesheet>
+
 </h:head>
 
 <h:body>
-    <h:form id="mainForm">
 
-        <div class="box">
-            <div class="title">Live Vote Count</div>
-            <h:commandButton value="Refresh" action="#{voteDashboard.refresh()}" styleClass="btn" />
+    
+    <h1>e-Voting Portal</h1>
 
-            <table>
-                <tr>
-                    <th>Vote ID</th>
-                    <th>Voter</th>
-                    <th>Candidate</th>
-                    <th>Party</th>
-                    <th>Election</th>
-                    <th>Time</th>
-                </tr>
-                <ui:repeat value="#{voteDashboard.votes}" var="v">
-                    <tr>
-                        <td>#{v.voteId}</td>
-                        <td>#{v.voters.voterName}</td>
-                        <td>#{v.candidates.candidateName}</td>
-                        <td>#{v.candidates.party.partyName}</td>
-                        <td>#{v.elections.electionName}</td>
-                        <td>#{v.timeStamp}</td>
-                    </tr>
-                </ui:repeat>
-            </table>
+    <h:messages globalOnly="true" styleClass="messages" />
+
+    <h:form id="votingForm">
+
+        <!-- STEP 1 -->
+        <div class="card">
+            <h3>Step 1: Voter Verification</h3>
+
+            <h:outputLabel value="Enter Voter ID:" /><br></br><br></br>
+            <h:inputText id="voterId" value="#{votingCDIBean.voterId}" />
+
+            <br></br>  <h:commandButton value="Verify Voter"
+                action="#{votingCDIBean.verifyVoter()}"
+                rendered="#{not votingCDIBean.voterVerified}">
+                <f:ajax execute="@form" render="@form voterMessage electionSection"/>
+            </h:commandButton>
+
+            <br></br><h:commandButton value="Reset"
+                action="#{votingCDIBean.resetVotingProcess()}">
+                <f:ajax execute="@form" render="@form"/>
+            </h:commandButton>
+
+           <br></br> <h:panelGroup id="voterMessage">
+                <h:outputText value="#{votingCDIBean.voterMessage}"
+                    styleClass="#{votingCDIBean.voterVerified ? 'success' : 'error'}" />
+            </h:panelGroup>
         </div>
 
-        <div class="box">
-            <div class="title">Reset Votes</div>
-            <h:commandButton value="Delete All Votes" action="#{voteDashboard.resetAllVotes()}" styleClass="btn btn-red" />
-        </div>
+        <!-- STEP 2 -->
+        <h:panelGroup id="electionSection">
+            <ui:fragment rendered="#{votingCDIBean.voterVerified}">
+                <div class="card">
+                    <h3>Step 2: Select Election</h3>
+
+                    <h:selectOneMenu id="electionSelect"
+                        value="#{votingCDIBean.selectedElectionId}">
+                        <f:selectItem itemLabel="-- Select Election --" itemValue="" />
+                        <f:selectItems value="#{votingCDIBean.activeElections}" var="e"
+                            itemLabel="#{e.electionName}"
+                            itemValue="#{e.electionId}" />
+                        <f:ajax event="change" listener="#{votingCDIBean.onElectionSelect()}"
+                            render="electionInfo candidatesSection messages" />
+                    </h:selectOneMenu>
+
+                    <h:panelGroup id="electionInfo">
+                        <ui:fragment rendered="#{votingCDIBean.selectedElection != null}">
+                            <p style="padding:12px; background:#f1f6ff; border-radius:8px;">
+                                <strong>Election:</strong> #{votingCDIBean.selectedElection.electionName}<br/>
+                                <strong>Description:</strong> #{votingCDIBean.selectedElection.description}<br/>
+                                <strong>Status:</strong> #{votingCDIBean.selectedElection.status}
+                            </p>
+                        </ui:fragment>
+                    </h:panelGroup>
+
+                    <ui:fragment rendered="#{votingCDIBean.hasVotedInElection}">
+                        <div style="color:red; font-weight:bold;">
+                            ⚠️ You have already voted in this election.
+                        </div>
+                    </ui:fragment>
+                </div>
+            </ui:fragment>
+        </h:panelGroup>
+
+        <!-- STEP 3 -->
+        <h:panelGroup id="candidatesSection">
+            <ui:fragment rendered="#{votingCDIBean.voterVerified and votingCDIBean.selectedElection != null and not votingCDIBean.hasVotedInElection}">
+                <div class="card">
+                    <h3>Step 3: Select Candidate</h3>
+
+                    <h:dataTable value="#{votingCDIBean.electionCandidates}" var="c" styleClass="table">
+
+                        <h:column>
+                            <f:facet name="header">Party</f:facet>
+                            <img src="#{c.party.partySymbol}" class="logo-img" />
+                            <br/>#{c.party.partyName}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Candidate</f:facet>
+                            #{c.candidateName}
+                        </h:column>
+
+<!--                        <h:column>
+                            <f:facet name="header">Nomination Date</f:facet>
+                            <h:outputText value="#{c.nominationDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </h:column>-->
+
+                        <h:column>
+                            <f:facet name="header">Action</f:facet>
+                            <h:commandButton value="Vote"
+                                action="#{votingCDIBean.castVote(c.candidateId)}"
+                                onclick="return confirm('Vote for #{c.candidateName}?');">
+                                <f:ajax execute="@form" render="@form messages"/>
+                            </h:commandButton>
+                        </h:column>
+
+                    </h:dataTable>
+
+                </div>
+            </ui:fragment>
+        </h:panelGroup>
+
+        <!-- VOTER INFO -->
+        <ui:fragment rendered="#{votingCDIBean.currentVoter != null}">
+            <div class="card">
+                <h3>Voter Information</h3>
+                <p>
+                    <strong>Name:</strong> #{votingCDIBean.currentVoter.voterName}<br/>
+                    <strong>City:</strong> #{votingCDIBean.currentVoter.city}
+                </p>
+            </div>
+        </ui:fragment>
 
     </h:form>
+
+    <div id="loadingMsg" class="refresh-msg">Loading...</div>
+
+    <div class="card">
+        <h3>📋 Voting Rules</h3>
+        <pre>#{votingCDIBean.votingRules}</pre>
+    </div>
+
 </h:body>
 </html>
-
-
-<!-- ======================= -->
-<!--   VoteDashboardBean.java -->
-<!-- ======================= -->
-
-package cdi;
-
-import EJB.UserBeanLocal;
-import Entity.Votes;
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-@Named("voteDashboard")
-@SessionScoped
-public class VoteDashboardBean implements Serializable {
-
-    @Inject
-    private UserBeanLocal userBean;
-
-    private List<Votes> votes = new ArrayList<>();
-
-    @PostConstruct
-    public void init() {
-        refresh();
-    }
-
-    public void refresh() {
-        votes = new ArrayList<>(userBean.getAllVotes());
-    }
-
-    public void resetAllVotes() {
-        userBean.deleteAllVotes();
-        refresh();
-    }
-
-    public List<Votes> getVotes() {
-        return votes;
-    }
-}

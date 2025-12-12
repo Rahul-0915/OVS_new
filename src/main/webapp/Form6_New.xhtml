@@ -1,156 +1,469 @@
-<!DOCTYPE html>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
-    <title>New Voter Registration Form</title>
-
+    <title>Voter Registration Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            margin: 0;
-            background: #f4f6f9;
-            font-family: Arial, sans-serif;
+        /* Base styles from your form-box */
+        .form-box {
+            width: 800px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            background: #f5f7fa;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 2px solid #1e3c72;
         }
-
-        .form-container {
-            width: 70%;
-            margin: 25px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        h2.title {
+        
+        /* Modern header */
+        .form-header {
             text-align: center;
-            color: #0D47A1;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1e3c72;
         }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
+        
+        .form-header h2 {
+            color: #1e3c72;
+            margin: 0;
+            font-size: 26px;
             font-weight: bold;
-            margin-bottom: 4px;
         }
-
-        input, select, textarea {
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
+        
+        .form-header .subtitle {
+            color: #666;
             font-size: 14px;
+            margin-top: 5px;
         }
-
-        .full {
-            grid-column: span 2;
-        }
-
-        .submit-btn {
-            margin-top: 20px;
-            padding: 12px 20px;
-            background: #0D47A1;
-            color: white;
-            border: none;
-            font-size: 18px;
+        
+        /* Form elements styling */
+        .form-box input, 
+        .form-box textarea {
             width: 100%;
-            border-radius: 6px;
-            cursor: pointer;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            box-sizing: border-box;
         }
-
-        .submit-btn:hover {
-            background: #08306d;
+        
+        .form-box input:focus, 
+        .form-box textarea:focus {
+            border-color: #1e3c72;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+        }
+        
+        /* File upload area */
+        .file-upload-box {
+            border: 2px dashed #1e3c72;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(30, 60, 114, 0.05);
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .file-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* Button styling */
+        .btn {
+            background: #1e3c72;
+            color: white;
+            padding: 14px;
+            border: none;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            background: #2a5298;
+        }
+        
+        /* Messages styling */
+        .error-msg {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+        }
+        
+        /* Required field indicator */
+        .required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        /* Form grid layout */
+        .form-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        /* Section styling */
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title {
+            color: #1e3c72;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 550px) {
+            .form-box {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .form-col {
+                min-width: 100%;
+            }
+        }
+        
+        /* Instructions box */
+        .instructions {
+            background: #e8f4fd;
+            border-left: 4px solid #1e3c72;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 13px;
+        }
+        
+        .instructions h4 {
+            color: #1e3c72;
+            margin: 0 0 8px 0;
+        }
+        
+        .instructions ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+        }
+        
+        /* Panel grid customization */
+        .custom-panel {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .custom-panel td {
+            padding: 8px 0;
+            vertical-align: top;
+        }
+        
+        /* Field labels */
+        .field-label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* Age warning */
+        .age-warning {
+            color: #e67e22;
+            font-size: 12px;
+            font-style: italic;
+        }
+        
+        /* Declaration */
+        .declaration {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #555;
+            margin-top: 20px;
+            border-left: 4px solid #28a745;
+        }
+        
+        /* Label container */
+        .label-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
     </style>
 </h:head>
 
 <h:body>
+    <button style="
+    padding: 10px 20px;
+    background-color: #4CAF50;  /* Green background */
+    color: white;               /* White text */
+    border: none;               /* Remove default border */
+    border-radius: 5px;         /* Rounded corners */
+    cursor: pointer;            /* Pointer on hover */
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-left: 60px;
+">
+    <a href="Users.jsf" style="
+        text-decoration: none;  /* Remove underline */
+        color: white;            /* Link color same as button */
+    ">Back</a>
+</button>
 
-    <div class="form-container">
-
-        <h2 class="title">New Voter Registration</h2>
-
+     
+    <div class="form-box">
+        <div class="form-header">
+            <h2>Voter Registration Form No-6</h2>
+            <div class="subtitle">Election Commission of India</div>
+        </div>
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <h4>Important Instructions:</h4>
+            <ul>
+                <li>All fields marked with <span class="required">*</span> are mandatory</li>
+                <li>Mobile number must be exactly 10 digits</li>
+                <li>Aadhaar number must be exactly 12 digits</li>
+                <li>You must be 18+ years old to register</li>
+                <li>Upload clear copies of documents </li>
+            </ul>
+        </div>
+        
         <h:form enctype="multipart/form-data">
-
-            <div class="grid">
-
-                <!-- NAME -->
-                <div class="input-group">
-                    <label>Full Name *</label>
-                    <h:inputText value="#{voterBean.voterName}" required="true"/>
-                </div>
-
-                <!-- MOBILE -->
-                <div class="input-group">
-                    <label>Mobile Number *</label>
-                    <h:inputText value="#{voterBean.mobileNumber}" maxlength="10" required="true"/>
-                </div>
-
-                <!-- AADHAAR -->
-                <div class="input-group">
-                    <label>Aadhaar Number *</label>
-                    <h:inputText value="#{voterBean.adharNumber}" maxlength="12" required="true"/>
-                </div>
-
-                <!-- EMAIL -->
-                <div class="input-group">
-                    <label>Email ID</label>
-                    <h:inputText value="#{voterBean.emailId}"/>
-                </div>
-
-                <!-- DOB -->
-                <div class="input-group">
-                    <label>Date of Birth *</label>
-                    <h:inputText type="date" value="#{voterBean.dob}" required="true"/>
-                </div>
-
-                <!-- CITY -->
-                <div class="input-group">
-                    <label>City *</label>
-                    <h:inputText value="#{voterBean.city}" required="true"/>
-                </div>
-
-                <!-- PINCODE -->
-                <div class="input-group">
-                    <label>Pincode *</label>
-                    <h:inputText value="#{voterBean.pincode}" maxlength="6" required="true"/>
-                </div>
-
-                <!-- ADDRESS -->
-                <div class="input-group full">
-                    <label>Address *</label>
-                    <h:inputTextarea value="#{voterBean.address}" rows="3" required="true"/>
-                </div>
-
-                <!-- AADHAAR FILE UPLOAD -->
-                <div class="input-group full">
-                    <label>Upload Aadhaar (PDF/JPG/PNG)</label>
-                    <h:inputFile value="#{voterBean.adharFile}"/>
-                </div>
-
-                <!-- VOTER PHOTO UPLOAD -->
-                <div class="input-group full">
-                    <label>Applicant Photograph (Passport Size)</label>
-                    <h:inputFile value="#{voterBean.voterImage}"/>
-                </div>
-
+            
+            <!-- Success/Error Messages -->
+            
+            
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <div class="section-title">Personal Information</div>
+                
+                <table class="custom-panel">
+                    <tr>
+                        <td>
+                            <div class="label-container">
+                                <h:outputLabel value="Full Name:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:inputText id="voterName" value="#{voterRegistrationBean.voterName}" 
+                                       required="true" requiredMessage="Full Name is required"
+                                       style="width:100%;"/>
+                            <h:message for="voterName" styleClass="error-msg" />
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <div class="label-container">
+                                <h:outputLabel value="Email ID:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:inputText id="email" value="#{voterRegistrationBean.email}" 
+                                       required="true" requiredMessage="Email is required">
+                                <f:validateRegex pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$" />
+                            </h:inputText>
+                            <div class="file-note">Valid email format required</div>
+                            <h:message for="email" styleClass="error-msg" />
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <div class="label-container">
+                                <h:outputLabel value="Mobile Number:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:inputText id="mobileNumber" value="#{voterRegistrationBean.mobileNumber}" 
+                                       required="true" requiredMessage="Mobile number is required">
+                                <f:validateLongRange minimum="1000000000" maximum="9999999999" />
+                            </h:inputText>
+                            <div class="file-note">Exactly 10 digits only</div>
+                            <h:message for="mobileNumber" styleClass="error-msg" />
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <div class="label-container">
+                                <h:outputLabel value="Aadhaar Number:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:inputText id="adharNumber" value="#{voterRegistrationBean.adharNumber}" 
+                                       required="true" requiredMessage="Aadhaar number is required">
+                                <f:validateLongRange minimum="100000000000" maximum="999999999999" />
+                            </h:inputText>
+                            <div class="file-note">Exactly 12 digits only</div>
+                            <h:message for="adharNumber" styleClass="error-msg" />
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <div class="label-container">
+                                <h:outputLabel value="Date of Birth:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:inputText id="dob" value="#{voterRegistrationBean.dob}" 
+                                       required="true" requiredMessage="Date of Birth is required">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:inputText>
+                            <div class="age-warning">Must be 18+ years old</div>
+                            <h:message for="dob" styleClass="error-msg" />
+                        </td>
+                    </tr>
+                </table>
             </div>
-
-            <!-- SUBMIT BUTTON -->
-            <button class="submit-btn" type="submit">Submit Application</button>
-
+            
+            <!-- Address Information Section -->
+            <div class="form-section">
+                <div class="section-title">Address Information</div>
+                
+                <table class="custom-panel">
+                    <tr>
+                        <td>
+                            <div class="label-container">
+                                <h:outputLabel value="City:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:inputText id="city" value="#{voterRegistrationBean.city}" 
+                                       required="true" requiredMessage="City is required"
+                                       style="width:100%;"/>
+                            <h:message for="city" styleClass="error-msg" />
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <div class="label-container">
+                                <h:outputLabel value="Pincode:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:inputText id="pincode" value="#{voterRegistrationBean.pincode}" 
+                                       required="true" requiredMessage="Pincode is required"
+                                       style="width:100%;"/>
+                            <h:message for="pincode" styleClass="error-msg" />
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <div class="label-container">
+                                <h:outputLabel value="Complete Address:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:inputTextarea id="address" value="#{voterRegistrationBean.address}" 
+                                           required="true" requiredMessage="Address is required"
+                                           rows="3" style="width:100%;"/>
+                            <h:message for="address" styleClass="error-msg" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+                    <h:messages  globalOnly="true" layout="table" 
+                      infoClass="success-msg" errorClass="error-msg" />
+            <!-- Document Upload Section -->
+            <div class="form-section">
+                <div class="section-title">Document Upload</div>
+                
+                <div class="form-grid">
+                    <div class="form-col">
+                        <div class="label-container">
+                            <h:outputLabel value="Aadhaar Document:" />
+                            <span class="required">*</span>
+                        </div>
+                        <div class="file-upload-box">
+                            <h:inputFile id="adharFile" value="#{voterRegistrationBean.adharFile}" 
+                                       required="true" 
+                                       requiredMessage="Aadhaar document is required"/>
+                        </div>
+                        <div class="file-note">PDF format preferred</div>
+                        <h:message for="adharFile" styleClass="error-msg" />
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="label-container">
+                            <h:outputLabel value="Photograph:" />
+                            <span class="required">*</span>
+                        </div>
+                        <div class="file-upload-box">
+                            <h:inputFile id="voterImage" value="#{voterRegistrationBean.voterImage}" 
+                                       required="true"
+                                       requiredMessage="Photograph is required"/>
+                        </div>
+                        <div class="file-note">JPG/PNG format</div>
+                        <h:message for="voterImage" styleClass="error-msg" />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Declaration -->
+            <div class="declaration">
+                <strong>Declaration:</strong> I hereby declare that all information provided above is true and correct. 
+                I understand that providing false information may lead to cancellation of my voter registration 
+                and legal action as per the Representation of the People Act, 1951.
+            </div>
+            
+            <!-- Submit Button -->
+            <h:commandButton value="Submit Registration" 
+                           action="#{voterRegistrationBean.registerVoter}"
+                           styleClass="btn" >
+                <f:ajax execute="@form" render="@form"/>
+            </h:commandButton>
         </h:form>
-
     </div>
-
 </h:body>
-
 </html>

@@ -35,7 +35,7 @@ public class UserBean implements UserBeanLocal {
     private Pbkdf2PasswordHash passwordHash;
 
     @Override
-    public void addVoter(String voterName, int mobileNumber, int adharNumber, String emailId, Date dob, String city, int pincode, String address, String adharFilePath, String voterImagePath) {
+    public void addVoter(String voterName, long mobileNumber, long adharNumber, String emailId, Date dob, String city, int pincode, String address, String adharFilePath, String voterImagePath) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Voters v = new Voters();
         v.setVoterName(voterName);
@@ -101,7 +101,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
-public void updateVoter(int voterId, String voterName, int mobileNumber, int adharNumber, String emailId, 
+public void updateVoter(int voterId, String voterName, long mobileNumber, long adharNumber, String emailId, 
                         Date dob, String city, int pincode, String address, String adharFilePath, 
                         String voterImagePath, int status, Date issueDate) {
     Voters v = em.find(Voters.class, voterId);
@@ -129,19 +129,21 @@ public void updateVoter(int voterId, String voterName, int mobileNumber, int adh
 }
 
     // votes....................................................................
-    @Override
-    public void addVote(int voterId, int candidateId, int partyId, Date timeStamp,
-            int electionId, int verifyStatus, String electionName) {
-        Votes v = new Votes();
-        v.setTimeStamp(timeStamp);
-        v.setVerifyStatus(verifyStatus);
+        @Override
+        public void addVote(int voterId, int candidateId, int partyId, Date timeStamp,
+                int electionId, int verifyStatus, String electionName) {
+            Votes v = new Votes();
+            v.setTimeStamp(timeStamp);
+            v.setVerifyStatus(verifyStatus);
+            v.setParty(em.find(Party.class, partyId));
+            v.setElectionName(electionName);
 
-        v.setVoters(em.find(Voters.class, voterId));
-        v.setCandidates(em.find(Candidates.class, candidateId));
-        v.setElections(em.find(Elections.class, electionId));
+            v.setVoters(em.find(Voters.class, voterId));
+            v.setCandidates(em.find(Candidates.class, candidateId));
+            v.setElections(em.find(Elections.class, electionId));
 
-        em.persist(v);
-    }
+            em.persist(v);
+        }
 
     @Override
     public Collection<Votes> getAllVotes() {
@@ -176,10 +178,18 @@ public void updateVoter(int voterId, String voterName, int mobileNumber, int adh
 
     @Override
     public Collection<Votes> findByElectionName(String electionName) {
-        return em.createQuery("SELECT v FROM Votes v WHERE v.elections.electionName = :ename")
-                .setParameter("ename", electionName)
-                .getResultList();
+        return em.createQuery("SELECT v FROM Votes v WHERE v.electionName = :ename", Votes.class)
+         .setParameter("ename", electionName)
+         .getResultList();
+
     }
+    @Override
+public Collection<Votes> findByElectionIdAndVoterId(int electionId, int voterId) {
+    return em.createQuery("SELECT v FROM Votes v WHERE v.elections.electionId = :eid AND v.voters.voterId = :vid", Votes.class)
+            .setParameter("eid", electionId)
+            .setParameter("vid", voterId)
+            .getResultList();
+}
     // users .......................................
 
     @Override

@@ -19,10 +19,10 @@ import java.util.Date;
 public interface UserBeanLocal {
 
     //Voters ejb....................
-        public void addVoter(String voterName, int mobileNumber, int adharNumber, String emailId, Date dob, String city,
+        public void addVoter(String voterName, long mobileNumber, long adharNumber, String emailId, Date dob, String city,
                 int pincode, String address, String adharFilePath, String voterImagePath);
 
-        public void updateVoter(int voterId, String voterName, int mobileNumber, int adharNumber, String emailId,
+        public void updateVoter(int voterId, String voterName, long mobileNumber, long adharNumber, String emailId,
                         Date dob, String city, int pincode, String address, String adharFilePath,
                         String voterImagePath, int status, Date issueDate);
 
@@ -57,10 +57,12 @@ public interface UserBeanLocal {
     Collection<Votes> findByElectionId(int electionId);
 
     Collection<Votes> findByElectionName(String electionName);
+    
+    Collection<Votes> findByElectionIdAndVoterId(int electionId, int voterId);
 
     //users.......................
     void addUser(String userName, String email,String mobile, String password, int gId, int verify);
     
-
+    
 
 }
