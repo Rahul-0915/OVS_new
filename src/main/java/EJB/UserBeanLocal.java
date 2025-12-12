@@ -10,6 +10,7 @@ import Entity.Votes;
 import jakarta.ejb.Local;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -64,5 +65,6 @@ public interface UserBeanLocal {
     void addUser(String userName, String email,String mobile, String password, int gId, int verify);
     
     
+
 
 }

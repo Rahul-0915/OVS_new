@@ -7,11 +7,13 @@ package EJB;
 import Entity.Candidates;
 import Entity.Elections;
 import Entity.Party;
+import Entity.Votes;
 import jakarta.annotation.security.DeclareRoles;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -320,6 +322,51 @@ public class AdminBean implements AdminBeanLocal {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+     @Override
+    public Collection<Votes> getAllVotes() {
+        try {
+            return em.createQuery("SELECT v FROM Votes v", Votes.class).getResultList();
+        } catch (Exception e) {
+            System.err.println("Error getting all votes: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+    
+    @Override
+    public Collection<Votes> getVotesByElectionId(Integer electionId) {
+        try {
+            return em.createQuery("SELECT v FROM Votes v WHERE v.election.electionId = :electionId", Votes.class)
+                    .setParameter("electionId", electionId)
+                    .getResultList();
+        } catch (Exception e) {
+            System.err.println("Error getting votes by election: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+    
+    @Override
+    public Collection<Votes> getVotesByCandidateId(Integer candidateId) {
+        try {
+            return em.createQuery("SELECT v FROM Votes v WHERE v.candidate.candidateId = :candidateId", Votes.class)
+                    .setParameter("candidateId", candidateId)
+                    .getResultList();
+        } catch (Exception e) {
+            System.err.println("Error getting votes by candidate: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+    
+    @Override
+    public Collection<Votes> getVotesByPartyId(Integer partyId) {
+        try {
+            return em.createQuery("SELECT v FROM Votes v WHERE v.party.partyId = :partyId", Votes.class)
+                    .setParameter("partyId", partyId)
+                    .getResultList();
+        } catch (Exception e) {
+            System.err.println("Error getting votes by party: " + e.getMessage());
+            return new ArrayList<>();
         }
     }
 }

@@ -7,6 +7,7 @@ package EJB;
 import Entity.Candidates;
 import Entity.Elections;
 import Entity.Party;
+import Entity.Votes;
 import jakarta.ejb.Local;
 import java.util.Collection;
 import java.util.Date;
@@ -74,6 +75,9 @@ public interface AdminBeanLocal {
     
     Elections findElectionById(Integer electionId);
 
-
+Collection<Votes> getAllVotes();
+    Collection<Votes> getVotesByElectionId(Integer electionId);
+    Collection<Votes> getVotesByCandidateId(Integer candidateId);
+    Collection<Votes> getVotesByPartyId(Integer partyId);
 
 }

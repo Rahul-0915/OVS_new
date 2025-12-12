@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Vote Results</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <!-- Election Selection -->
+            <p:panel header="Select Election">
+                <p:outputLabel value="Select Election: " />
+                <p:selectOneMenu value="#{voteCDIBean.selectedElectionId}">
+                    <f:selectItem itemLabel="-- Select Election --" itemValue="" />
+                    <f:selectItems value="#{voteCDIBean.allElections}" 
+                                  var="election"
+                                  itemLabel="#{election.electionName}"
+                                  itemValue="#{election.electionId}" />
+                </p:selectOneMenu>
+                
+                <p:commandButton value="Calculate Results" 
+                               action="#{voteCDIBean.calculateResults}"
+                               update="@form" />
+            </p:panel>
+            
+            <!-- Election Summary -->
+            <p:panel header="Election Summary" rendered="#{voteCDIBean.resultsAvailable}">
+                <p:dataTable value="#{voteCDIBean.electionResults}" var="result">
+                    <p:column headerText="Election Name">
+                        <h:outputText value="#{result.electionName}" />
+                    </p:column>
+                    <p:column headerText="Total Votes">
+                        <h:outputText value="#{result.totalVotes}" />
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:outputText value="#{result.status}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            
+            <!-- Winner Information -->
+            <p:panel header="Winner Information" rendered="#{voteCDIBean.winnerCandidate != null}">
+                <h3>Winner Candidate</h3>
+                <p>Name: #{voteCDIBean.winnerCandidate.candidateName}</p>
+                <p>Party: #{voteCDIBean.winnerCandidate.partyName}</p>
+                <p>Votes: #{voteCDIBean.winnerCandidate.totalVotes}</p>
+                <p>Percentage: #{voteCDIBean.winnerCandidate.votePercentage}%</p>
+            </p:panel>
+            
+            <!-- Candidate-wise Results -->
+            <p:panel header="Candidate-wise Results" rendered="#{voteCDIBean.resultsAvailable}">
+                <p:dataTable value="#{voteCDIBean.candidateWiseResults}" var="candidate">
+                    <p:column headerText="Rank">
+                        <h:outputText value="#{candidateWiseResults.indexOf(candidate) + 1}" />
+                    </p:column>
+                    <p:column headerText="Candidate Name">
+                        <h:outputText value="#{candidate.candidateName}" />
+                    </p:column>
+                    <p:column headerText="Party">
+                        <h:outputText value="#{candidate.partyName}" />
+                    </p:column>
+                    <p:column headerText="Votes">
+                        <h:outputText value="#{candidate.totalVotes}" />
+                    </p:column>
+                    <p:column headerText="Percentage">
+                        <h:outputText value="#{candidate.votePercentage}%" />
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:outputText value="#{candidate.resultStatus}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            
+            <!-- Party-wise Results -->
+            <p:panel header="Party-wise Results" rendered="#{voteCDIBean.resultsAvailable}">
+                <p:dataTable value="#{voteCDIBean.partyWiseResults}" var="party">
+                    <p:column headerText="Party Name">
+                        <h:outputText value="#{party.partyName}" />
+                    </p:column>
+                    <p:column headerText="Leader">
+                        <h:outputText value="#{party.leaderName}" />
+                    </p:column>
+                    <p:column headerText="Votes">
+                        <h:outputText value="#{party.totalVotes}" />
+                    </p:column>
+                    <p:column headerText="Percentage">
+                        <h:outputText value="#{party.votePercentage}%" />
+                    </p:column>
+                    <p:column headerText="Candidates">
+                        <h:outputText value="#{party.totalCandidates}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            
+            <!-- Export Button -->
+            <p:commandButton value="Export to PDF" 
+                           rendered="#{voteCDIBean.resultsAvailable}"
+                           action="#{voteCDIBean.exportToPDF}" />
+            
+            <p:commandButton value="Reset" 
+                           action="#{voteCDIBean.resetResults}"
+                           update="@form" />
+        </h:form>
+    </h:body>
+</html>
