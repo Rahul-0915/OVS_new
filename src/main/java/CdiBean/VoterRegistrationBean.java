@@ -21,6 +21,9 @@ public class VoterRegistrationBean implements Serializable {
 
     @Inject
     private UserBeanLocal userBean;
+    @Inject
+private VoterModuleBean voterModule;
+
 
     private String voterName, email, city, address;
     private long mobileNumber, adharNumber;
@@ -76,6 +79,7 @@ public class VoterRegistrationBean implements Serializable {
                 voterName, mobileNumber, adharNumber, email, dob, city, pincode,
                 address, "Uploads/" + adharFileName, "Uploads/" + voterImgName
             );
+            voterModule.refreshList();
 
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your Voter Registration Form has been submitted successfully.Please visit the website after 7 days Using Aadhaar Number download your Voter Card ,Thank you!!", ""));
             

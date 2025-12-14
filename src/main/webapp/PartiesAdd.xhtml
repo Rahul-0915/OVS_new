@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:head>
     <title>Add Party</title>
+
+    <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             margin: 0;
@@ -51,13 +55,6 @@
             border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            border-color: #1e90ff;
-            box-shadow: 0 0 5px rgba(30,144,255,0.3);
-            outline: none;
         }
 
         .error-message {
@@ -66,28 +63,16 @@
             margin-top: 3px;
         }
 
-       .btn-submit {
-    background-color: #28a745;   /* green */
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 100%;
-    font-weight: bold;
-    transition: 0.3s ease;
-}
-
-.btn-submit:hover {
-    background-color: #218838;
-    transform: scale(1.03);
-}
-
-        @media (max-width: 600px) {
-            .row {
-                flex-direction: column;
-            }
+        .btn-submit {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            font-weight: bold;
         }
     </style>
 </h:head>
@@ -95,54 +80,82 @@
 <h:body>
 
 <div class="form-container">
-
     <h1>Add New Party</h1>
 
-    <h:form enctype="multipart/form-data">
+    <h:form id="partyForm">
 
-        <!-- Row 1: Party ID + Party Name -->
+        <!-- Party ID + Party Name -->
         <div class="row">
             <div class="col">
                 <label>Party ID</label>
-                <h:inputText value="#{partyCDIBean.partyId}" required="true" styleClass="form-input"/>
+                <h:inputText id="partyId"
+                             value="#{partyCDIBean.partyId}"
+                             a:placeholder="Enter Party Id"
+                             required="true"
+                             requiredMessage="Party ID is required"
+                             styleClass="form-input"/>
                 <h:message for="partyId" styleClass="error-message"/>
             </div>
 
             <div class="col">
                 <label>Party Name</label>
-                <h:inputText value="#{partyCDIBean.partyName}" required="true" styleClass="form-input"/>
+                <h:inputText id="partyName"
+                             value="#{partyCDIBean.partyName}"
+                             a:placeholder="Enter Party Name"
+                             required="true"
+                             requiredMessage="Party Name is required"
+                             styleClass="form-input"/>
                 <h:message for="partyName" styleClass="error-message"/>
             </div>
         </div>
 
-        <!-- Row 2: Party Symbol + Leader Name -->
+        <!-- Party Symbol + Leader Name -->
         <div class="row">
             <div class="col">
-                <label>Party Symbol (Image Path)</label>
-                <h:inputText value="#{partyCDIBean.partySymbol}" required="true" styleClass="form-input"/>
+                <label>Party Symbol</label>
+                <h:inputText id="partySymbol"
+                             value="#{partyCDIBean.partySymbol}"
+                             a:placeholder="Party Symbol"
+                             required="true"
+                             requiredMessage="Party Symbol is required"
+                             styleClass="form-input"/>
                 <h:message for="partySymbol" styleClass="error-message"/>
             </div>
 
             <div class="col">
                 <label>Leader Name</label>
-                <h:inputText value="#{partyCDIBean.leaderName}" required="true" styleClass="form-input"/>
+                <h:inputText id="leaderName"
+                             value="#{partyCDIBean.leaderName}"
+                             a:placeholder="Enter Leader Name"
+                             required="true"
+                             requiredMessage="Leader Name is required"
+                             styleClass="form-input"/>
                 <h:message for="leaderName" styleClass="error-message"/>
             </div>
         </div>
 
-        <!-- Row 3: Founded Year -->
+        <!-- Founded Year -->
         <div class="row">
             <div class="col">
                 <label>Founded Year</label>
-                <h:inputText value="#{partyCDIBean.foundedYear}" required="true" styleClass="form-input"/>
+                <h:inputText id="foundedYear"
+                             value="#{partyCDIBean.foundedYear}"
+                             a:placeholder="Enter Founded Year"
+                             required="true"
+                             requiredMessage="Founded Year is required"
+                             styleClass="form-input"/>
                 <h:message for="foundedYear" styleClass="error-message"/>
             </div>
-            <div class="col"></div>
         </div>
 
+        <!-- ALERT RENDER AREA (IMPORTANT) -->
+        <h:panelGroup id="alertArea"/>
+
         <!-- Submit Button -->
-        <h:commandButton value="Add Party" action="#{partyCDIBean.addParty}" styleClass="btn-submit">
-            <f:ajax execute="@form" render="@form"/>
+        <h:commandButton value="Add Party"
+                         action="#{partyCDIBean.addParty}"
+                         styleClass="btn-submit">
+            <f:ajax execute="@form" render="@form alertArea"/>
         </h:commandButton>
 
     </h:form>

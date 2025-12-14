@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:head>
     <title>Add Candidate</title>
@@ -107,7 +108,9 @@ textarea {
 </h:head>
 
 <h:body>
-
+<f:metadata>
+    <f:viewAction action="#{candidateCDIBean.clearForm}" />
+</f:metadata>
 <div class="container">
     <h2>Add New Candidate</h2>
 
@@ -119,7 +122,7 @@ textarea {
             <div class="col">
                 <label for="cid">Candidate ID</label>
                 <h:inputText id="cid" value="#{candidateCDIBean.candidateId}"
-                             required="true" requiredMessage="Please enter Candidate ID">
+                             required="true" a:placeholder="Enter Candidate Id" requiredMessage="Please enter Candidate ID">
                     <f:validateLongRange minimum="1"/>
                 </h:inputText>
                 <h:message for="cid" styleClass="error-msg"/>
@@ -128,7 +131,7 @@ textarea {
             <div class="col">
                 <label for="cname">Candidate Name</label>
                 <h:inputText id="cname" value="#{candidateCDIBean.candidateName}"
-                             required="true" requiredMessage="Please enter Candidate Name"/>
+                             required="true" a:placeholder="Enter Candidate Name" requiredMessage="Please enter Candidate Name"/>
                 <h:message for="cname" styleClass="error-msg"/>
             </div>
 
@@ -141,7 +144,7 @@ textarea {
                 <label for="nomDate">Nomination Date</label>
                 <h:inputText id="nomDate" type="date"
                              value="#{candidateCDIBean.nominationDate}"
-                             required="true" requiredMessage="Please select Nomination Date">
+                             required="true" a:placeholder="Enter Nomination Date" requiredMessage="Please select Nomination Date">
                     <f:convertDateTime pattern="yyyy-MM-dd"/>
                 </h:inputText>
                 <h:message for="nomDate" styleClass="error-msg"/>

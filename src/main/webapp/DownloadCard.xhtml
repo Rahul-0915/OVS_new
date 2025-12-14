@@ -2,281 +2,326 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
-<h:head>
-    <title>Download Voter Card</title>
-
-    <style>
-
-        body{
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-        }
-
-        .main-box{
-            width: 500px;
-            margin: 40px auto;
-            padding: 25px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.18);
-            text-align: center;
-        }
-
-        .btn{
-            padding: 12px 18px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            margin: 10px;
-            color: white;
-            font-size: 15px;
-        }
-        .btn-orange{
-            background: #ff6b00;
-        }
-        .btn-blue{
-            background: #0057b8;
-        }
-        .btn-green{
-            background: #1a8f1a;
-        }
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 
-        /* POPUP */
-        .popup-bg{
-            position: fixed;
-            top:0; left:0; right:0; bottom:0;
-            background: rgba(0,0,0,0.45);
-            display:flex;
-            justify-content:center;
-            align-items:center;
-        }
+    <h:head>
+        <title>Download Voter Card</title>
 
-        .popup-box{
-            width: 350px;
-            padding: 20px;
-            background:white;
-            border-radius:10px;
-            box-shadow:0 0 8px rgba(0,0,0,0.3);
-            animation:fadeIn 0.2s;
-        }
+        <style>
 
-        @keyframes fadeIn{
-            from{ opacity:0; transform:scale(0.95); }
-            to{ opacity:1; transform:scale(1); }
-        }
+            body{
+                font-family: Arial, sans-serif;
+                background: #f2f2f2;
+            }
 
+            .main-box{
+                width: 500px;
+                margin: 40px auto;
+                padding: 25px;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.18);
+                text-align: center;
+            }
 
-        /* CARD DESIGN */
-        .card-wrap{
-            width: 380px;
-            margin: 25px auto;
-        }
-
-        .voter-card{
-            width: 100%;
-            border: 1px solid #444;
-            border-radius: 10px;
-            padding: 12px;
-            background: white;
-            margin-bottom: 22px;
-            box-shadow: 0 0 6px rgba(0,0,0,0.10);
-            position: relative;
-            gap:5px;
-        }
-
-        .seal{
-            position:absolute; right:10px; bottom:10px;
-            width:80px; height:80px;
-            background-color:silver;
-            opacity:0.18;
-            background-image:url('Uploads/logo.png');
-            background-size:cover;
-        }
-        .photo{
-            width:100px; height:120px; border:1px solid #777; border-radius:6px; object-fit:cover;
-        }
-        .card-header{
-            display:flex; align-items:center; border-bottom:2px solid #ff6b00; padding-bottom:6px; margin-bottom:10px;
-        }
-        .eci-logo{ width:55px; height:55px; margin-right:10px; }
-        .eci-title{ font-size:16px; font-weight:bold; color:#ff6b00; }
-        .details{ font-size:14px; line-height:1.4; }
+            .btn{
+                padding: 12px 18px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+                margin: 10px;
+                color: white;
+                font-size: 15px;
+            }
+            .btn-orange{
+                background: #ff6b00;
+            }
+            .btn-blue{
+                background: #0057b8;
+            }
+            .btn-green{
+                background: #1a8f1a;
+            }
 
 
-        .back-title{
-            font-weight:bold;
-            font-size:16px;
-            color:#003399;
-            margin-bottom:6px;
-        }
-        .rules{
-            font-size:13px;
-            line-height:1.5;
-        }
+            /* POPUP */
+            .popup-bg{
+                position: fixed;
+                top:0;
+                left:0;
+                right:0;
+                bottom:0;
+                background: rgba(0,0,0,0.45);
+                display:flex;
+                justify-content:center;
+                align-items:center;
+            }
 
-        .msg{
-            margin-top: 20px;
-            font-size: 17px;
-            font-weight: bold;
-        }
-        .msg-red{ color:red; }
-        .msg-blue{ color:#0057b8; }
+            .popup-box{
+                width: 350px;
+                padding: 20px;
+                background:white;
+                border-radius:10px;
+                box-shadow:0 0 8px rgba(0,0,0,0.3);
+                animation:fadeIn 0.2s;
+            }
 
-        /* PRINT ONLY CARD */
-        @media print {
-            body * { visibility: hidden; }
-            #printCard, #printCard * { visibility: visible; }
-            #printCard { position:absolute; left:0; top:0; width:100%; }
-        }
-
-    </style>
-
-    <script>
-        function printVoterCard() {
-            document.getElementById("printCard").style.display = "block";
-            window.print();
-        }
-    </script>
-
-</h:head>
+            @keyframes fadeIn{
+                from{
+                    opacity:0;
+                    transform:scale(0.95);
+                }
+                to{
+                    opacity:1;
+                    transform:scale(1);
+                }
+            }
 
 
-<h:body>
-<h:form >
-    <h:button value="← Back" 
-              outcome="/Users.jsf" 
-              style="padding:6px 12px; background:darkslateblue; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold; margin-left:1px"/>
-</h:form>
+            /* CARD DESIGN */
+            .card-wrap{
+                width: 380px;
+                margin: 25px auto;
+            }
 
-    <div class="main-box">
+            .voter-card{
+                width: 100%;
+                border: 1px solid #444;
+                border-radius: 10px;
+                padding: 12px;
+                background: white;
+                margin-bottom: 22px;
+                box-shadow: 0 0 6px rgba(0,0,0,0.10);
+                position: relative;
+                gap:5px;
+            }
 
-        <h2 style="color: darkslateblue">Download Voter ID Card</h2>
-
-        <h:form>
-
-            <h:commandButton value="Download Using Voter ID"
-                             styleClass="btn btn-blue"
-                             action="#{downloadCard.openVoterPopup}"/>
-
-            <h:commandButton value="Download Using Aadhar Number"
-                             styleClass="btn btn-blue"
-                             action="#{downloadCard.openAdharPopup}"/>
-
-        </h:form>
-    </div>
-
-
-    <!-- POPUP INPUT -->
-    <h:panelGroup rendered="#{downloadCard.openPopup}">
-        <div class="popup-bg">
-            <div class="popup-box">
-
-                <h3 style="text-align:center;">Enter #{downloadCard.inputLabel}</h3>
-
-                <h:form>
-                    <h:inputText value="#{downloadCard.inputValue}"
-                                 style="width:100%; padding:10px; margin-top:12px; border:1px solid #ccc; border-radius:6px;"/>
-
-                    <div style="text-align:center; margin-top:20px;">
-                        <h:commandButton value="Search"
-                                         styleClass="btn btn-blue"
-                                         action="#{downloadCard.searchVoter}"/>
-
-                        <h:commandButton value="Cancel"
-                                         styleClass="btn btn-orange"
-                                         action="#{downloadCard.closePopup}"/>
-                    </div>
-                </h:form>
-
-            </div>
-        </div>
-    </h:panelGroup>
-
-
-    <!-- RESULT MESSAGES -->
-    <h:panelGroup rendered="#{downloadCard.notFound}">
-        <div class="msg msg-red" style="text-align:center;">❌ Record Not Found!</div>
-    </h:panelGroup>
-
-    <h:panelGroup rendered="#{downloadCard.pending}">
-        <div class="msg msg-blue" style="text-align:center;">⏳ Your Application is Pending </div>
-    </h:panelGroup>
+            .seal{
+                position:absolute;
+                right:10px;
+                bottom:10px;
+                width:80px;
+                height:80px;
+                background-color:silver;
+                opacity:0.18;
+                background-image:url('Uploads/logo.png');
+                background-size:cover;
+            }
+            .photo{
+                width:100px;
+                height:120px;
+                border:1px solid #777;
+                border-radius:6px;
+                object-fit:cover;
+            }
+            .card-header{
+                display:flex;
+                align-items:center;
+                border-bottom:2px solid #ff6b00;
+                padding-bottom:6px;
+                margin-bottom:10px;
+            }
+            .eci-logo{
+                width:55px;
+                height:55px;
+                margin-right:10px;
+            }
+            .eci-title{
+                font-size:16px;
+                font-weight:bold;
+                color:#ff6b00;
+            }
+            .details{
+                font-size:14px;
+                line-height:1.4;
+            }
 
 
-    <!-- CARD FRONT + BACK -->
-    <h:panelGroup rendered="#{downloadCard.approved}">
+            .back-title{
+                font-weight:bold;
+                font-size:16px;
+                color:#003399;
+                margin-bottom:6px;
+            }
+            .rules{
+                font-size:13px;
+                line-height:1.5;
+            }
 
-        <div style="text-align:center; margin-bottom:20px;">
-            <button class="btn btn-green" onclick="printVoterCard()">Print Card</button>
-        </div>
+            .msg{
+                margin-top: 20px;
+                font-size: 17px;
+                font-weight: bold;
+            }
+            .msg-red{
+                color:red;
+            }
+            .msg-blue{
+                color:#0057b8;
+            }
+
+            /* PRINT ONLY CARD */
+            @media print {
+                body * {
+                    visibility: hidden;
+                }
+                #printCard, #printCard * {
+                    visibility: visible;
+                }
+                #printCard {
+                    position:absolute;
+                    left:0;
+                    top:0;
+                    width:100%;
+                }
+            }
+
+        </style>
+
+        <script>
+            function printVoterCard() {
+                document.getElementById("printCard").style.display = "block";
+                window.print();
+            }
+        </script>
+
+    </h:head>
+
+
+    <h:body>
+        
+        <ui:include src="Navbar.xhtml" />
         
 
+        <div class="main-box">
 
-        <div id="printCard">
+            <h2 style="color: darkslateblue">Download Voter ID Card</h2>
 
-            <div class="card-wrap">
+            <h:form>
 
-                <!-- FRONT -->
-                <div class="voter-card">
+                <h:commandButton value="Download Using Voter ID" 
+                                 
+                                 styleClass="btn btn-blue"
+                                 action="#{downloadCard.openVoterPopup}"  />                     
 
-                    <div class="card-header">
-                        <img src="Uploads/logo.png" class="eci-logo"/>
-                        <div class="eci-title">Election Commission of India<br/>VOTER ID CARD</div>
-                    </div>
+                <h:commandButton value="Download Using Aadhar Number"
+                                 styleClass="btn btn-blue"
+                                 action="#{downloadCard.openAdharPopup}"/>
 
-                    <div style="display:flex;">
-                        <img src="#{downloadCard.voter.voterImage}" class="photo"/>
+            </h:form>
+        </div>
 
-                        <div class="details" style="margin-left: 5px">
-                            <b>Voter ID:</b> #{downloadCard.voter.voterId}<br/>
-                            <b>Name:</b> #{downloadCard.voter.voterName}<br/>
-                            <b>Mobile:</b> #{downloadCard.voter.mobileNumber}<br/>
-                            <b>Email:</b> #{downloadCard.voter.emailId}<br/>
-                            <b>Address:</b> 
-                             #{downloadCard.voter.address}, #{downloadCard.voter.city}<br/>
-                            <b>Pincode:</b> #{downloadCard.voter.pincode}<br/>
-                            <b>Issue Date:</b>
-                            <h:outputText value="#{downloadCard.voter.issueDate}">
-                                <f:convertDateTime pattern="dd-MM-yyyy"/>
-                            </h:outputText>
+
+        <!-- POPUP INPUT -->
+        <h:panelGroup rendered="#{downloadCard.openPopup}">
+            <div class="popup-bg">
+                <div class="popup-box">
+
+                    <h3 style="text-align:center;">Enter #{downloadCard.inputLabel}</h3>
+
+                    <h:form>
+                        <h:inputText value="#{downloadCard.inputValue}"
+                                     style="width:100%; padding:10px; margin-top:12px; border:1px solid #ccc; border-radius:6px;"/>
+
+                        <div style="text-align:center; margin-top:20px;">
+                            <h:commandButton value="Search"
+                                             styleClass="btn btn-blue"
+                                             action="#{downloadCard.searchVoter}"/>
+
+                            <h:commandButton value="Cancel"
+                                             styleClass="btn btn-orange"
+                                             action="#{downloadCard.closePopup}"/>
                         </div>
-                    </div>
+                    </h:form>
 
-                    <div class="seal"></div>
                 </div>
+            </div>
+        </h:panelGroup>
 
 
-                <!-- BACK -->
-                <div class="voter-card">
+        <!-- RESULT MESSAGES -->
+        <h:panelGroup rendered="#{downloadCard.notFound}">
+            <div class="msg msg-red" style="text-align:center;">❌ Record Not Found!</div>
+        </h:panelGroup>
 
-                    <div class="back-title">Important Rules for Voters</div>
+        <h:panelGroup rendered="#{downloadCard.pending}">
+            <div class="msg msg-blue" style="text-align:center;">⏳ Your Application is Pending </div>
+        </h:panelGroup>
 
-                    <div class="rules">
-                        • हमेशा अपना वोट स्वयं डालें।<br/>
-                        
-                        • कोई भी चुनाव अधिकारी मांगे तो पहचान पत्र दिखाएँ।<br/>
-                        • किसी प्रकार का दबाव या प्रलोभन स्वीकार न करें।<br/>
-                        • सही उम्मीदवार को सोच-समझकर वोट दें।<br/><br/>
 
-                        <b>Helpline:</b> 1950<br/>
-                        <b>Website:</b> https://voters.eci.gov.in/<br/>
-                        <b>Email:</b> help@eci.gov.in
+        <!-- CARD FRONT + BACK -->
+        <h:panelGroup rendered="#{downloadCard.approved}">
+
+            <div style="text-align:center; margin-bottom:20px;">
+                <button class="btn btn-green" onclick="printVoterCard()">Print Card</button>
+            </div>
+
+
+
+            <div id="printCard">
+
+                <div class="card-wrap">
+
+                    <!-- FRONT -->
+                    <div class="voter-card">
+
+                        <div class="card-header">
+                            <img src="Uploads/logo.png" class="eci-logo"/>
+                            <div class="eci-title">Election Commission of India<br/>VOTER ID CARD</div>
+                        </div>
+
+                        <div style="display:flex;">
+                            <img src="#{downloadCard.voter.voterImage}" class="photo"/>
+
+                            <div class="details" style="margin-left: 5px">
+                                <b>Voter ID:</b> #{downloadCard.voter.voterId}<br/>
+                                <b>Name:</b> #{downloadCard.voter.voterName}<br/>
+                                <b>Mobile:</b> #{downloadCard.voter.mobileNumber}<br/>
+                                <b>Email:</b> #{downloadCard.voter.emailId}<br/>
+                                <b>Address:</b> 
+                                #{downloadCard.voter.address}, #{downloadCard.voter.city}<br/>
+                                <b>Pincode:</b> #{downloadCard.voter.pincode}<br/>
+                                <b>Issue Date:</b>
+                                <h:outputText value="#{downloadCard.voter.issueDate}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                </h:outputText>
+                            </div>
+                        </div>
+
+                        <div class="seal"></div>
                     </div>
 
-                    <div class="seal"></div>
+
+                    <!-- BACK -->
+                    <div class="voter-card">
+
+                        <div class="back-title">Important Rules for Voters</div>
+
+                        <div class="rules">
+                            • हमेशा अपना वोट स्वयं डालें।<br/>
+
+                            • कोई भी चुनाव अधिकारी मांगे तो पहचान पत्र दिखाएँ।<br/>
+                            • किसी प्रकार का दबाव या प्रलोभन स्वीकार न करें।<br/>
+                            • सही उम्मीदवार को सोच-समझकर वोट दें।<br/><br/>
+
+                            <b>Helpline:</b> 1950<br/>
+                            <b>Website:</b> https://voters.eci.gov.in/<br/>
+                            <b>Email:</b> help@eci.gov.in
+                        </div>
+
+                        <div class="seal"></div>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
-
-    </h:panelGroup>
+        </h:panelGroup>
 
 
-</h:body>
+    </h:body>
 
 </html>

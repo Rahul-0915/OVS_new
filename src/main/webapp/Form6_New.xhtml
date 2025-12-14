@@ -3,7 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:head>
     <title>Voter Registration Form</title>
@@ -287,12 +288,13 @@
                         <td>
                             <h:inputText id="voterName" value="#{voterRegistrationBean.voterName}" 
                                        required="true" requiredMessage="Full Name is required"
-                                       style="width:100%;"/>
+                                       a:placeholder="Enter Your Full Name" style="width:100%;"/>
                             <h:message for="voterName" styleClass="error-msg" />
                         </td>
                     </tr>
                     
                     <tr>
+                        
                         <td>
                             <div class="label-container">
                                 <h:outputLabel value="Email ID:" />
@@ -301,14 +303,28 @@
                         </td>
                         <td>
                             <h:inputText id="email" value="#{voterRegistrationBean.email}" 
-                                       required="true" requiredMessage="Email is required">
+                                       required="true" a:placeholder="Enter Your Email id" requiredMessage="Email is required">
                                 <f:validateRegex pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$" />
                             </h:inputText>
                             <div class="file-note">Valid email format required</div>
                             <h:message for="email" styleClass="error-msg" />
                         </td>
                     </tr>
-                    
+                    <tr>
+                         <td>
+                            <div class="label-container">
+                                <h:outputLabel value="Gender:" />
+                                <span class="required">*</span>
+                            </div>
+                        </td>
+                        <td>
+                            <h:selectOneRadio>
+    <f:selectItem itemValue="Male" itemLabel="Male" />
+    <f:selectItem itemValue="Female" itemLabel="Female" />
+</h:selectOneRadio>
+
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <div class="label-container">
@@ -318,7 +334,7 @@
                         </td>
                         <td>
                             <h:inputText id="mobileNumber" value="#{voterRegistrationBean.mobileNumber}" 
-                                       required="true" requiredMessage="Mobile number is required">
+                                       required="true" a:placeholder="Enter Mobile Number" requiredMessage="Mobile number is required">
                                 <f:validateLongRange minimum="1000000000" maximum="9999999999" />
                             </h:inputText>
                             <div class="file-note">Exactly 10 digits only</div>
@@ -335,7 +351,7 @@
                         </td>
                         <td>
                             <h:inputText id="adharNumber" value="#{voterRegistrationBean.adharNumber}" 
-                                       required="true" requiredMessage="Aadhaar number is required">
+                                       required="true" a:placeholder="Enter Aadhar number" requiredMessage="Aadhaar number is required">
                                 <f:validateLongRange minimum="100000000000" maximum="999999999999" />
                             </h:inputText>
                             <div class="file-note">Exactly 12 digits only</div>
@@ -352,7 +368,7 @@
                         </td>
                         <td>
                             <h:inputText id="dob" value="#{voterRegistrationBean.dob}" 
-                                       required="true" requiredMessage="Date of Birth is required">
+                                       required="true" a:placeholder="Enter DOB In YYYY/MM/DD formate" requiredMessage="Date of Birth is required">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </h:inputText>
                             <div class="age-warning">Must be 18+ years old</div>
@@ -376,7 +392,7 @@
                         </td>
                         <td>
                             <h:inputText id="city" value="#{voterRegistrationBean.city}" 
-                                       required="true" requiredMessage="City is required"
+                                       required="true" a:placeholder="Enter City Name" requiredMessage="City is required"
                                        style="width:100%;"/>
                             <h:message for="city" styleClass="error-msg" />
                         </td>
@@ -391,7 +407,7 @@
                         </td>
                         <td>
                             <h:inputText id="pincode" value="#{voterRegistrationBean.pincode}" 
-                                       required="true" requiredMessage="Pincode is required"
+                                       required="true"  requiredMessage="Pincode is required"
                                        style="width:100%;"/>
                             <h:message for="pincode" styleClass="error-msg" />
                         </td>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<h:head>
+    <title>Admin News</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1f2933;
+        }
+
+        .page-wrap {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f3b7b;
+        }
+
+        .tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-weight: 600;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 130px;
+            margin-top: 6px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #cbd5f5;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+        }
+
+        .btn-row {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 9px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #ffffff;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #9ca3af;
+        }
+
+        .btn-secondary:hover {
+            background: #6b7280;
+        }
+
+        .preview-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .preview-box {
+            background: #fff7d6;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #fbbf24;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .preview-label {
+            font-weight: 700;
+            margin-right: 4px;
+            color: #92400e;
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="page-wrap">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Post News (Admin)</div>
+                <span class="tag">Broadcast to all users</span>
+            </div>
+
+            <h:form>
+                <label for="msg">News message</label>
+                <h:inputTextarea id="msg"
+                                 value="#{newsCdiBean.newMessage}"
+                                 styleClass="news-textarea" />
+
+                <div class="btn-row">
+                    <h:commandButton value="Add News"
+                                     action="#{newsCdiBean.addNews}"
+                                     styleClass="btn btn-primary" />
+                    <h:commandButton value="Clear All"
+                                     action="#{newsCdiBean.clearAll}"
+                                     styleClass="btn btn-secondary" />
+                </div>
+            </h:form>
+        </div>
+
+        <!-- Existing news list for admin view -->
+        <h:panelGroup rendered="#{not empty newsCdiBean.newsList}">
+            <div class="card">
+                <div class="preview-title">All current announcements</div>
+                <ui:repeat value="#{newsCdiBean.newsList}" var="n" varStatus="st">
+                    <div class="preview-box" style="margin-bottom:8px;">
+                        <b>Update #{st.index + 1}:</b>
+                        <h:outputText value="#{n}" />
+                    </div>
+                </ui:repeat>
+            </div>
+        </h:panelGroup>
+    </div>
+</h:body>
+</html>

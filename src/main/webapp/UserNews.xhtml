@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<h:head>
+    <title>User Home</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fb;
+            color: #111827;
+            font-size: 15px;
+        }
+
+        .page-wrap {
+            max-width:80%;
+            margin: 24px auto;
+            padding: 0 20px 20px;
+        }
+
+        /* News area */
+        .news-wrapper {
+            margin: 16px 0 24px;
+        }
+
+        .news-box {
+            background: #ffffff;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+        }
+
+        .news-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .news-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .news-icon {
+            font-size: 20px;
+        }
+
+        .news-title {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .news-tag {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-weight: 600;
+        }
+
+        .news-list {
+            margin-top: 4px;
+        }
+
+        .news-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 4px 0;
+            font-size: 25px;
+            line-height: 1.5;
+        }
+
+        .news-bullet {
+            color: #2563eb;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* No updates message */
+        .news-empty {
+            background: #f9fafb;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px dashed #d1d5db;
+            font-size: 14px;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .news-empty-icon {
+            font-size: 18px;
+        }
+
+        .news-empty-strong {
+            font-weight: 600;
+            color: #374151;
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="page-wrap">
+
+        <!-- Navbar yahan -->
+<ui:include src="Navbar.xhtml" />
+        <div class="news-wrapper">
+            <!-- jab list me news hai -->
+            <h:panelGroup rendered="#{not empty newsCdiBean.newsList}">
+                <div class="news-box">
+                    <div class="news-header">
+                        <div class="news-left">
+                            <span class="news-icon">📰</span>
+                            <span class="news-title">Latest Announcements</span>
+                        </div>
+                        <span class="news-tag">Updated for you</span>
+                    </div>
+
+                    <div class="news-list">
+                        <ui:repeat value="#{newsCdiBean.newsList}" var="n" varStatus="st">
+                            <div class="news-item">
+                                <span class="news-bullet">•</span>
+                                <h:outputText value="#{n}" />
+                            </div>
+                        </ui:repeat>
+                    </div>
+                </div>
+            </h:panelGroup>
+
+            <!-- jab koi news nahi -->
+            <h:panelGroup rendered="#{empty newsCdiBean.newsList}">
+                <div class="news-empty">
+                    <span class="news-empty-icon">ℹ️</span>
+                    <span>
+                        <span class="news-empty-strong">No announcements right now.</span>
+                        Please check back later for new updates from the administration.
+                    </span>
+                </div>
+            </h:panelGroup>
+        </div>
+
+        
+
+    </div>
+</h:body>
+</html>

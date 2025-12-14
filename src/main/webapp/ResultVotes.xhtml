@@ -3,104 +3,197 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Vote Results</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <!-- Election Selection -->
-            <p:panel header="Select Election">
-                <p:outputLabel value="Select Election: " />
-                <p:selectOneMenu value="#{voteCDIBean.selectedElectionId}">
-                    <f:selectItem itemLabel="-- Select Election --" itemValue="" />
-                    <f:selectItems value="#{voteCDIBean.allElections}" 
-                                  var="election"
-                                  itemLabel="#{election.electionName}"
-                                  itemValue="#{election.electionId}" />
+<h:head>
+    <title>Election Results - Live</title>
+    <h:outputStylesheet library="primefaces" name="saga-theme.css"/>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa; }
+        .container { max-width: 90%; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: #2c3e50; color: white; padding: 20px; text-align: center; margin: -20px -20px 20px -20px; border-radius: 8px 8px 0 0; }
+        .status-live { background: #d4edda; color: #155724; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold; margin-bottom: 20px; }
+        .form-section { background: #e9ecef; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .result-card { background: white; border: 1px solid #dee2e6; margin-bottom: 15px; border-radius: 5px; overflow: hidden; }
+        .card-header { 
+    background: #1e3c72 !important;  /* Dark Blue - Table header se match */
+    color: white !important;
+    padding: 12px 15px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+}
+
+        .card-content { padding: 15px; }
+        .live-indicator { color: #28a745; font-weight: bold; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .ui-datatable { border: 1px solid #dee2e6; }
+       .ui-datatable thead th { 
+    background:#E8F3FF;
+    
+    border: none !important;
+}
+
+
+        .winner-row { background: #d4edda !important; font-weight: bold !important; }
+        .refresh-section { text-align: center; margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px; }
+    </style>
+</h:head>
+<h:body>
+    <div class="container">
+        <div class="header">
+            <h1 style="margin: 0;">🏛️ Election Results Dashboard</h1>
+            <p style="margin: 5px 0 0 0; opacity: 0.9;">Real-time Live Updates | No Manual Refresh Needed</p>
+        </div>
+        
+        <h:form id="mainForm">
+            <div class="form-section">
+                <p:selectOneMenu value="#{voteCDIBean.selectedElectionId}" style="width:350px; margin-right: 10px;">
+                    <f:selectItem itemLabel="-- Select Election --" itemValue="#{null}" />
+                    <f:selectItems value="#{voteCDIBean.allElections}" var="election" 
+                                   itemLabel="#{election.electionName}" itemValue="#{election.electionId}" />
+                    <p:ajax event="change" listener="#{voteCDIBean.calculateResults}" 
+                            update=":mainForm:growl :mainForm:resultsPanel :mainForm:statusIndicator" />
                 </p:selectOneMenu>
                 
-                <p:commandButton value="Calculate Results" 
-                               action="#{voteCDIBean.calculateResults}"
-                               update="@form" />
-            </p:panel>
+                <p:commandButton value="🔄 Live Refresh" action="#{voteCDIBean.refreshLiveResults}" 
+                               update=":mainForm:growl :mainForm:resultsPanel :mainForm:statusIndicator"
+                               style="background: #28a745; border: none; color: white; padding: 8px 20px; border-radius: 5px;" />
+            </div>
             
-            <!-- Election Summary -->
-            <p:panel header="Election Summary" rendered="#{voteCDIBean.resultsAvailable}">
-                <p:dataTable value="#{voteCDIBean.electionResults}" var="result">
-                    <p:column headerText="Election Name">
-                        <h:outputText value="#{result.electionName}" />
-                    </p:column>
-                    <p:column headerText="Total Votes">
-                        <h:outputText value="#{result.totalVotes}" />
-                    </p:column>
-                    <p:column headerText="Status">
-                        <h:outputText value="#{result.status}" />
-                    </p:column>
-                </p:dataTable>
-            </p:panel>
+            <p:growl id="growl" showDetail="true" />
             
-            <!-- Winner Information -->
-            <p:panel header="Winner Information" rendered="#{voteCDIBean.winnerCandidate != null}">
-                <h3>Winner Candidate</h3>
-                <p>Name: #{voteCDIBean.winnerCandidate.candidateName}</p>
-                <p>Party: #{voteCDIBean.winnerCandidate.partyName}</p>
-                <p>Votes: #{voteCDIBean.winnerCandidate.totalVotes}</p>
-                <p>Percentage: #{voteCDIBean.winnerCandidate.votePercentage}%</p>
-            </p:panel>
+            <!-- LIVE STATUS -->
+            <p:outputPanel id="statusIndicator" rendered="#{voteCDIBean.selectedElection != null}">
+                <div class="status-live">
+<!--                    <span class="live-indicator">🔴 LIVE</span> -->
+                    #{voteCDIBean.selectedElection.electionName} - 
+                    Status: <strong>#{voteCDIBean.selectedElection.status}</strong> 
+                    | Total Votes: <strong>#{voteCDIBean.totalVotesInElection}</strong>
+                </div>
+            </p:outputPanel>
             
-            <!-- Candidate-wise Results -->
-            <p:panel header="Candidate-wise Results" rendered="#{voteCDIBean.resultsAvailable}">
-                <p:dataTable value="#{voteCDIBean.candidateWiseResults}" var="candidate">
-                    <p:column headerText="Rank">
-                        <h:outputText value="#{candidateWiseResults.indexOf(candidate) + 1}" />
-                    </p:column>
-                    <p:column headerText="Candidate Name">
-                        <h:outputText value="#{candidate.candidateName}" />
-                    </p:column>
-                    <p:column headerText="Party">
-                        <h:outputText value="#{candidate.partyName}" />
-                    </p:column>
-                    <p:column headerText="Votes">
-                        <h:outputText value="#{candidate.totalVotes}" />
-                    </p:column>
-                    <p:column headerText="Percentage">
-                        <h:outputText value="#{candidate.votePercentage}%" />
-                    </p:column>
-                    <p:column headerText="Status">
-                        <h:outputText value="#{candidate.resultStatus}" />
-                    </p:column>
-                </p:dataTable>
-            </p:panel>
+            <p:outputPanel id="resultsPanel">
+                <!-- UPCOMING -->
+                <p:outputPanel rendered="#{voteCDIBean.isElectionUpcoming()}">
+                    <div style="text-align: center; padding: 50px; color: #6c757d; font-size: 18px;">
+                        <i class="pi pi-clock" style="font-size: 64px; display: block; margin-bottom: 20px; color: #ffc107;"></i>
+                        <h2>Election Upcoming</h2>
+                        <p>Abhi start nahi hua hai! Results display nahi honge.</p>
+                    </div>
+                </p:outputPanel>
+                
+                <!-- ACTIVE + COMPLETE - SHOW ALL TABLES -->
+                <p:outputPanel rendered="#{voteCDIBean.isResultsAvailable()}">
+                    <div class="results-section">
+                        <!-- SUMMARY -->
+                        <div class="result-card">
+                            <div class="card-header">📊 Election Summary</div>
+                            <div class="card-content">
+                                <p:dataTable value="#{voteCDIBean.electionResults}" var="result" style="width:100%">
+                                    <p:column headerText="Election Name" style="width:50%">
+                                        <h:outputText value="#{result.electionName}"/>
+                                    </p:column>
+                                    <p:column headerText="Total Votes" style="width:20%">
+                                        <h:outputText value="#{result.totalVotes}"/>
+                                    </p:column>
+                                    <p:column headerText="Status" style="width:30%">
+                                        <p:badge value="#{result.status}" 
+                                               severity="#{result.status == 'complete' ? 'success' : result.status == 'active' ? 'info' : 'warn'}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                        
+                        <!-- CANDIDATE RESULTS -->
+                        <div class="result-card">
+                            <div class="card-header">
+                                👥 Candidate-wise Results 
+                                <span style="float:right; font-size:12px; opacity:0.8;">
+                                    #{voteCDIBean.candidateWiseResults.size()} Candidates
+                                </span>
+                            </div>
+                            <div class="card-content">
+                                <p:dataTable value="#{voteCDIBean.candidateWiseResults}" var="candidate"
+                                           rowStyleClass="#{candidate.resultStatus == 'WINNER' ? 'winner-row' : null}"
+                                           paginator="true" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                    <p:column headerText="Rank" style="width:60px; text-align:center">
+                                        <h:outputText value="#{voteCDIBean.candidateWiseResults.indexOf(candidate) + 1}"/>
+                                    </p:column>
+                                    <p:column headerText="Candidate Name" style="width:35%">
+                                        <h:outputText value="#{candidate.candidateName}"/>
+                                    </p:column>
+                                    <p:column headerText="Party" style="width:25%">
+                                        <h:outputText value="#{candidate.partyName}"/>
+                                    </p:column>
+                                    <p:column headerText="Votes" style="width:15%; text-align:right">
+                                        <h:outputText value="#{candidate.totalVotes}"/>
+                                    </p:column>
+                                    <p:column headerText="%" style="width:10%; text-align:right">
+                                        <h:outputText value="#{candidate.votePercentage}"/>
+                                    </p:column>
+                                    <p:column headerText="Status" style="width:15%" rendered="#{voteCDIBean.isElectionComplete()}">
+                                        <p:badge value="#{candidate.resultStatus}" 
+                                               severity="#{candidate.resultStatus == 'WINNER' ? 'success' : 'info'}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                        
+                        <!-- PARTY RESULTS -->
+                        <div class="result-card">
+                            <div class="card-header">
+                                🏛️ Party-wise Results 
+                                <span style="float:right; font-size:12px; opacity:0.8;">
+                                    #{voteCDIBean.partyWiseResults.size()} Parties
+                                </span>
+                            </div>
+                            <div class="card-content">
+                                <p:dataTable value="#{voteCDIBean.partyWiseResults}" var="party"
+                                           paginator="true" rows="10">
+                                    <p:column headerText="Party Name" style="width:35%">
+                                        <h:outputText value="#{party.partyName}"/>
+                                    </p:column>
+                                    <p:column headerText="Leader" style="width:25%">
+                                        <h:outputText value="#{party.leaderName}"/>
+                                    </p:column>
+                                    <p:column headerText="Votes" style="width:15%; text-align:right">
+                                        <h:outputText value="#{party.totalVotes}"/>
+                                    </p:column>
+                                    <p:column headerText="%" style="width:10%; text-align:right">
+                                        <h:outputText value="#{party.votePercentage}"/>
+                                    </p:column>
+                                    <p:column headerText="Candidates" style="width:15%; text-align:center">
+                                        <h:outputText value="#{party.totalCandidates}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- WINNER INFO - ONLY COMPLETE -->
+                    <p:outputPanel rendered="#{voteCDIBean.isElectionComplete() and voteCDIBean.winnerCandidate != null}">
+                        <div class="result-card" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border-left: 5px solid #28a745;">
+                            <div class="card-header" style="background: #28a745;">
+                                🏆 WINNER ANNOUNCEMENT
+                            </div>
+                            <div class="card-content" style="padding: 25px; text-align: center;">
+                                <h2 style="color: #155724; margin-bottom: 15px;">
+                                    #{voteCDIBean.winnerCandidate.candidateName}
+                                </h2>
+                                <p style="font-size: 18px; color: #495057;">
+                                    #{voteCDIBean.winnerCandidate.partyName} | 
+                                    #{voteCDIBean.winnerCandidate.totalVotes} votes (#{voteCDIBean.winnerCandidate.votePercentage}%)
+                                </p>
+                            </div>
+                        </div>
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:outputPanel>
             
-            <!-- Party-wise Results -->
-            <p:panel header="Party-wise Results" rendered="#{voteCDIBean.resultsAvailable}">
-                <p:dataTable value="#{voteCDIBean.partyWiseResults}" var="party">
-                    <p:column headerText="Party Name">
-                        <h:outputText value="#{party.partyName}" />
-                    </p:column>
-                    <p:column headerText="Leader">
-                        <h:outputText value="#{party.leaderName}" />
-                    </p:column>
-                    <p:column headerText="Votes">
-                        <h:outputText value="#{party.totalVotes}" />
-                    </p:column>
-                    <p:column headerText="Percentage">
-                        <h:outputText value="#{party.votePercentage}%" />
-                    </p:column>
-                    <p:column headerText="Candidates">
-                        <h:outputText value="#{party.totalCandidates}" />
-                    </p:column>
-                </p:dataTable>
-            </p:panel>
-            
-            <!-- Export Button -->
-            <p:commandButton value="Export to PDF" 
-                           rendered="#{voteCDIBean.resultsAvailable}"
-                           action="#{voteCDIBean.exportToPDF}" />
-            
-            <p:commandButton value="Reset" 
-                           action="#{voteCDIBean.resetResults}"
-                           update="@form" />
+            <!-- AUTO REFRESH POLL -->
+            <p:poll interval="5" listener="#{voteCDIBean.refreshLiveResults}" 
+                   update=":mainForm:statusIndicator :mainForm:resultsPanel :mainForm:growl" 
+                   rendered="#{voteCDIBean.isElectionActive() and voteCDIBean.selectedElectionId != null}"
+                  />
         </h:form>
-    </h:body>
+    </div>
+</h:body>
 </html>

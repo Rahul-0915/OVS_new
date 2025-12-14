@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="jakarta.faces.facelets">
 
 <head>
     <title>Voter Portal Dashboard</title>
@@ -12,24 +13,7 @@
             background: #f3f4f6;
         }
 
-        .navbar {
-            background: #0D47A1;
-            padding: 12px 25px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-left {
-            font-size: 22px;
-            font-weight: bold;
-        }
-        .nav-right a {
-            margin-left: 25px;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-        }
+        
 
         .main-container { padding: 20px; }
 
@@ -88,19 +72,12 @@
 
 <body>
 
-    <!-- NAVBAR -->
-    <div class="navbar">
-        <div class="nav-left">VOTER SERVICE PORTAL</div>
-        <div class="nav-right">
-            <a href="Votes.jsf">Vote</a>
-            <a href="logout.xhtml">Logout</a>
-        </div>
-    </div>
+   <ui:include src="Navbar.xhtml" />
+
 
     <div class="main-container">
 
         <div class="section-box">
-
             <!-- LEFT AREA -->
             <div class="left-area">
                 <div class="section-title">Form Section</div>
@@ -142,6 +119,17 @@
                 <div class="small-box">
                     <h4>E-Card Download</h4>
                     <a class="btn" href="DownloadCard.jsf" target="_blank">Download E-Card</a>
+                </div>
+                
+                
+                
+                <div class="small-box">
+                    <h4>Election Results</h4>
+                    <a class="btn" href="ElectionResult.jsf" target="_blank">Check Result</a>
+                </div>
+                <div class="small-box">
+                    <h4>Vote</h4>
+                    <a class="btn" href="Votes.jsf" target="_blank">Vote</a>
                 </div>
 
                 <div class="small-box">

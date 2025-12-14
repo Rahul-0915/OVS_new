@@ -128,7 +128,7 @@ public class PartyCDIBean implements Serializable {
                 this.partySymbol = "PartySymbols/" + fileName;
             }
 
-            abl.updateParty(partyId, partyName, leaderName, partySymbol, foundedYear);
+            abl.updateParty(partyId, partyName,  partySymbol,leaderName, foundedYear);
 
             clearFields();
             refresh();
@@ -140,7 +140,7 @@ public class PartyCDIBean implements Serializable {
             e.printStackTrace();
         }
 
-        return "faces-redirect=true";
+        return "ManageParties.xhtml?faces-redirect=true";
         
     }
 

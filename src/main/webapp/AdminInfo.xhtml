@@ -6,56 +6,135 @@
 <h:head>
     <title>Voter Dashboard</title>
     <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fb;
+            color: #111827;
+        }
+
+        .stats-wrap {
+            max-width: 90%;
+            margin: 30px auto;
+            padding: 0 20px 20px;
+        }
+
+        .stats-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f3b7b;
+            margin-bottom: 12px;
+        }
+
         .stats-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
         }
+
         .stat-box {
-            width: 250px;
-            height: 150px;
-            background-color: #f0f0f0;
-            border-radius: 10px;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 2px 2px 10px #aaa;
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 130px;
         }
-        .stat-title { font-size: 20px; margin-bottom: 15px; }
-        .stat-count { font-size: 36px; font-weight: bold; color: green; }
-        .pending .stat-count { color: red; }
-        
+
+        .stat-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 6px;
+        }
+
+        .stat-subtitle {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 10px;
+        }
+
+        .stat-count {
+            font-size: 32px;
+            font-weight: 800;
+            color: #16a34a;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .stat-box.pending .stat-count {
+            color: #ef4444;
+        }
+
+        .stat-box.info .stat-count {
+            color: #0ea5e9;
+        }
     </style>
 </h:head>
 
 <h:body>
     <h:form>
-        <div class="stats-container">
-            <!-- Approved Voters -->
-            <div class="stat-box approved">
-                <div class="stat-title">Approved Voters</div>
-                <div class="stat-count">
-                    <h:outputText value="#{voterModule.approvedList.size()}" />
+        <div class="stats-wrap">
+
+            <div class="stats-header">Election Overview</div>
+
+            <div class="stats-container">
+                <!-- Approved Voters -->
+                
+                 <!-- Update / News Post -->
+                <div class="stat-box info">
+                    <div>
+                        <div class="stat-title">Updates / News</div>
+                        <div class="stat-subtitle">Latest admin announcements</div>
+                    </div>
+                    <div>
+                        <div class="stat-count">
+                            <h:outputText value="#{newsCdiBean.newsList.size()}" />
+                            <h:button 
+            value="ADD_NEW"
+            outcome="AdminNewsPost"
+            styleClass="nav-link logout-btn"
+            style="border: none; padding: 10px; font-weight: 700;" />
+                        </div>
+                        <div class="stat-label">Total posts</div>
+                    </div>
+                </div>
+                <div class="stat-box approved">
+                    <div>
+                        <div class="stat-title">Approved Voters</div>
+                        <div class="stat-subtitle">Total voters cleared for voting</div>
+                    </div>
+                    <div>
+                        <div class="stat-count">
+                            <h:outputText value="#{voterModule.approvedList.size()}" />
+                        </div>
+                        <div class="stat-label">Active verified</div>
+                    </div>
+                </div>
+
+               
+
+                <!-- Pending Requests -->
+                <div class="stat-box pending">
+                    <div>
+                        <div class="stat-title">Pending Requests</div>
+                        <div class="stat-subtitle">Applications waiting for approval</div>
+                    </div>
+                    <div>
+                        <div class="stat-count">
+                            <h:outputText value="#{voterModule.voters.size() - voterModule.approvedList.size()}" />
+                        </div>
+                        <div class="stat-label">To be reviewed</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Pending Requests -->
-            <div class="stat-box pending">
-                <div class="stat-title">Pending Requests</div>
-                <div class="stat-count">
-                    <h:outputText value="#{voterModule.voters.size() - voterModule.approvedList.size()}" />
-                </div>
-            </div>
-<!--            <div class="stat-box pending">
-                <div class="stat-title">Pending Requests</div>
-                <div class="stat-count">
-                    <h:outputText value="#{voterModule.voters.size() - voterModule.approvedList.size()}" />
-                </div>
-            </div>-->
         </div>
-
-        <!-- Refresh button -->
-      
-
     </h:form>
 </h:body>
 </html>

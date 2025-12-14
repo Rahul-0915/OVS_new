@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html">
+    <h:head>
+        <title>Facelet Title</title>
+        <style>
+        .navbar {
+    background: #ffffff;
+    padding: 10px 25px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #1f3b7b;
+}
+
+.nav-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.nav-link {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+/* Home */
+.home-btn {
+    background: #2563eb;
+}
+.home-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* News */
+.news-btn { background: #f59e0b; }
+.news-btn:hover { background: #d97706; transform: translateY(-1px); }
+
+/* Vote */
+.vote-btn { background: #16a34a; }
+.vote-btn:hover { background: #15803d; transform: translateY(-1px); }
+
+/* Logout */
+.logout-btn { background: #ef4444; }
+.logout-btn:hover { background: #dc2626; transform: translateY(-1px); }
+
+            </style>
+        
+    </h:head>
+    <h:body>
+      <nav class="navbar">
+    <div class="nav-left">
+        <img src="Uploads/logo.png"
+             alt="ECI Logo"
+             style="
+                 height:50px;
+                 width:auto;
+                 object-fit:contain;
+             " />
+        <span>VOTER SERVICE PORTAL</span>
+    </div>
+
+    <div class="nav-right">
+        <a href="Users.jsf" class="nav-link home-btn">Home</a>
+        <a href="UserNews.jsf" class="nav-link news-btn">📰 News</a>
+        <a href="Votes.jsf" class="nav-link vote-btn">🗳️ Vote</a>
+        <h:button 
+            value="Logout"
+            outcome="Logout"
+            styleClass="nav-link logout-btn"
+            style="border: none; font-weight: 700;" />
+    </div>
+</nav>
+
+    </h:body>
+</html>

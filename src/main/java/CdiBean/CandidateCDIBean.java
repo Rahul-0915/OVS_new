@@ -56,6 +56,7 @@ public class CandidateCDIBean implements Serializable {
     // ================= ADD ====================
     public String addCandidate() {
         abl.addCandidates(candidateId, candidateName, nominationDate, electionId, partyId);
+            candidatesList = abl.getAllCandidates();
         clearForm();
         return "ManageCandidates.xhtml?faces-redirect=true";
     }
@@ -129,8 +130,9 @@ public class CandidateCDIBean implements Serializable {
     // ================= UPDATE =================
     public String updateCandidate() {
         abl.updateCandidate(candidateId, candidateName, nominationDate, electionId, partyId);
+        candidatesList = abl.getAllCandidates();
         clearForm();
-        return "faces-redirect=true";
+        return "ManageCandidates.jsf?faces-redirect=true";
     }
 
     // ================= CLEAR FORM =================
